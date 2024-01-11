@@ -28,7 +28,7 @@ const db = {
         }
     ]
 };
-app.get('/', (_req, res) => res.status(200).send('Hello World!'));
+app.get('/', (_req, res) => res.status(200).send('Hello World!!!!!'));
 app.get('/courses', (_req, res) => {
     let courses = db.courses;
     if (_req.query.name) {

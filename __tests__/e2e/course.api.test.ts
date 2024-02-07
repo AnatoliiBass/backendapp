@@ -1,14 +1,15 @@
 import request from "supertest";
-import {HTTP_STATUSES, app} from "../../src";
+import {app} from "../../src/app";
 import type { CourseViewModel } from "../../src/models/CourseViewModel";
 import type { CourseCreateModel } from "../../src/models/CourseCreateModel";
 import type { CourseUpdateModel } from "../../src/models/CourseUpdateModel";
+import { HTTP_STATUSES } from "../../src/utils/httpstatuses";
 
 describe("/course", ()=>{
 
     beforeAll(async()=>{
         await request(app)
-            .delete("/testdelete")
+            .delete("/tests")
     })
 
     it("should return 200 and a list of courses", async ()=>{

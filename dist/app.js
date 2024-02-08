@@ -13,6 +13,6 @@ exports.app = (0, express_1.default)();
 const jsonParser = express_1.default.json();
 exports.app.use(jsonParser);
 exports.app.get('/', (_req, res) => res.status(httpstatuses_1.HTTP_STATUSES.OK).send('Hello World!!!!!'));
-exports.app.use('/courses', (0, courses_1.getCoursesRoute)(db_1.db));
+exports.app.use('/courses', courses_1.coursesRouter);
 exports.app.use('/tests', (0, tests_1.getTestsRoute)(db_1.db));
 //# sourceMappingURL=app.js.map

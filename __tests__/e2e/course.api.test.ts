@@ -27,7 +27,9 @@ describe("/course", ()=>{
         await request(app)
             .post("/courses")
             .send(data)
-            .expect(HTTP_STATUSES.BAD_REQUEST, null)
+            .expect(HTTP_STATUSES.BAD_REQUEST, 
+                { errors: [{ type: "field", value: data.name, msg: "Name must be between 3 and 100 characters long and cannot be empty", 
+                path: "name", location: "body" }] })
     })
     let createdCourse: CourseViewModel;
     it("should create a course with correct input data", async ()=>{
@@ -64,7 +66,8 @@ describe("/course", ()=>{
         await request(app)
             .put("/courses/" + createdCourse.id)
             .send(data)
-            .expect(HTTP_STATUSES.BAD_REQUEST, null)
+            .expect(HTTP_STATUSES.BAD_REQUEST, { errors: [{ type: "field", value: data.name, msg: "Name must be between 3 and 100 characters long and cannot be empty", 
+            path: "name", location: "body" }] })
 
         await request(app)
             .get("/courses/" + createdCourse.id)
@@ -95,7 +98,8 @@ describe("/course", ()=>{
         await request(app)
             .put("/courses/" + createdCourse2.id)
             .send(data)
-            .expect(HTTP_STATUSES.BAD_REQUEST, null)
+            .expect(HTTP_STATUSES.BAD_REQUEST, { errors: [{ type: "field", value: data.name, msg: "Name must be between 3 and 100 characters long and cannot be empty", 
+            path: "name", location: "body" }] })
 
         await request(app)
             .get("/courses/" + createdCourse2.id)

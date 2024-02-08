@@ -13,6 +13,8 @@ import type { CourseCreateModel } from "../models/CourseCreateModel";
 import type { CourseUpdateModel } from "../models/CourseUpdateModel";
 import { HTTP_STATUSES } from "../utils/httpstatuses";
 import { coursesRepository } from "../repositories/courses";
+import { nameValidator } from "../utils/helpersValidator";
+import { coursesValidation } from "../middelwares/validation";
 
 export const coursesRouter = Router();
 coursesRouter.get(
@@ -55,15 +57,12 @@ coursesRouter.delete(
 
 coursesRouter.post(
   "/",
+  nameValidator,
+  coursesValidation,
   (
     _req: RequestWithBody<CourseCreateModel>,
     res: Response<CourseViewModel | null>
   ) => {
-    if (!_req.body.name || _req.body.name === "") {
-      res.statusCode = HTTP_STATUSES.BAD_REQUEST;
-      res.statusMessage = "Name is required";
-      return res.json(null);
-    }
     const newCourse = coursesRepository.createCourse(_req.body.name);
     return res.status(HTTP_STATUSES.CREATED).json(newCourse);
   }
@@ -71,15 +70,12 @@ coursesRouter.post(
 
 coursesRouter.put(
   "/:id(\\d+)",
+  nameValidator,
+  coursesValidation,
   (
     _req: RequestWithParamsAndBody<CourseURIParamsModel, CourseUpdateModel>,
     res: Response<CourseViewModel | null>
   ) => {
-    if (!_req.body.name || _req.body.name === "") {
-      res.statusCode = HTTP_STATUSES.BAD_REQUEST;
-      res.statusMessage = "Name is required";
-      return res.json(null);
-    }
     const course = coursesRepository.updateCourse(
       +_req.params.id,
       _req.body.name

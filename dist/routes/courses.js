@@ -4,6 +4,8 @@ exports.coursesRouter = void 0;
 const express_1 = require("express");
 const httpstatuses_1 = require("../utils/httpstatuses");
 const courses_1 = require("../repositories/courses");
+const helpersValidator_1 = require("../utils/helpersValidator");
+const validation_1 = require("../middelwares/validation");
 exports.coursesRouter = (0, express_1.Router)();
 exports.coursesRouter.get("/", (_req, res) => {
     const courses = courses_1.coursesRepository.getAllCourses(_req.query.name);
@@ -25,21 +27,11 @@ exports.coursesRouter.delete("/:id(\\d+)", (_req, res) => {
     }
     return res.status(httpstatuses_1.HTTP_STATUSES.NO_CONTENT).send("Course deleted");
 });
-exports.coursesRouter.post("/", (_req, res) => {
-    if (!_req.body.name || _req.body.name === "") {
-        res.statusCode = httpstatuses_1.HTTP_STATUSES.BAD_REQUEST;
-        res.statusMessage = "Name is required";
-        return res.json(null);
-    }
+exports.coursesRouter.post("/", helpersValidator_1.nameValidator, validation_1.coursesValidation, (_req, res) => {
     const newCourse = courses_1.coursesRepository.createCourse(_req.body.name);
     return res.status(httpstatuses_1.HTTP_STATUSES.CREATED).json(newCourse);
 });
-exports.coursesRouter.put("/:id(\\d+)", (_req, res) => {
-    if (!_req.body.name || _req.body.name === "") {
-        res.statusCode = httpstatuses_1.HTTP_STATUSES.BAD_REQUEST;
-        res.statusMessage = "Name is required";
-        return res.json(null);
-    }
+exports.coursesRouter.put("/:id(\\d+)", helpersValidator_1.nameValidator, validation_1.coursesValidation, (_req, res) => {
     const course = courses_1.coursesRepository.updateCourse(+_req.params.id, _req.body.name);
     if (!course) {
         res.statusCode = httpstatuses_1.HTTP_STATUSES.NOT_FOUND;

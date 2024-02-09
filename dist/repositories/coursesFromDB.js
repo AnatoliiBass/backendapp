@@ -14,26 +14,23 @@ const db_1 = require("../db/db");
 const getViewModel_1 = require("../utils/getViewModel");
 exports.coursesRepository = {
     getAllCourses: (name) => __awaiter(void 0, void 0, void 0, function* () {
-        let courses = db_1.db.courses;
+        let filter = {};
         if (name) {
-            courses = courses.filter(course => course.name.includes(name));
+            filter = { name: { $regex: name } };
         }
-        return courses.map(getViewModel_1.getViewModel);
+        const getCourses = yield db_1.courses.find(filter).toArray();
+        return getCourses.map(getViewModel_1.getViewModel);
     }),
     getCourseById: (id) => __awaiter(void 0, void 0, void 0, function* () {
-        const course = db_1.db.courses.find(course => course.id === id);
-        if (!course) {
+        const getCourse = yield db_1.courses.findOne({ id });
+        if (!getCourse) {
             return null;
         }
-        return (0, getViewModel_1.getViewModel)(course);
+        return (0, getViewModel_1.getViewModel)(getCourse);
     }),
     deleteCourse: (id) => __awaiter(void 0, void 0, void 0, function* () {
-        const index = db_1.db.courses.findIndex(course => course.id === id);
-        if (index === -1) {
-            return false;
-        }
-        db_1.db.courses.splice(index, 1);
-        return true;
+        const result = yield db_1.courses.deleteOne({ id });
+        return result.deletedCount === 1;
     }),
     createCourse: (name) => __awaiter(void 0, void 0, void 0, function* () {
         const newCourse = {
@@ -41,16 +38,21 @@ exports.coursesRepository = {
             name,
             studentsAmount: 0
         };
-        db_1.db.courses.push(newCourse);
+        const result = yield db_1.courses.insertOne(newCourse);
         return (0, getViewModel_1.getViewModel)(newCourse);
     }),
     updateCourse: (id, name) => __awaiter(void 0, void 0, void 0, function* () {
-        const course = db_1.db.courses.find(course => course.id === id);
-        if (!course) {
+        const result = yield db_1.courses.updateOne({ id }, { $set: { name } });
+        if (!result.matchedCount) {
             return null;
         }
-        course.name = name;
-        return (0, getViewModel_1.getViewModel)(course);
+        else {
+            const getCourse = yield db_1.courses.findOne({ id });
+            if (!getCourse) {
+                return null;
+            }
+            return (0, getViewModel_1.getViewModel)(getCourse);
+        }
     })
 };
-//# sourceMappingURL=courses.js.map
+//# sourceMappingURL=coursesFromDB.js.map

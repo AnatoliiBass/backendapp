@@ -1,29 +1,26 @@
 import type { CourseViewModel } from "../models/CourseViewModel";
-import { db } from "../db/db";
+import { courses } from "../db/db";
 import { getViewModel } from "../utils/getViewModel";
 
 export const coursesRepository = {
     getAllCourses: async (name: string | undefined): Promise<CourseViewModel[]> => {
-        let courses = db.courses;
+        let filter = {};
         if(name){
-            courses = courses.filter(course => course.name.includes(name))
+            filter = {name: {$regex: name}};
         }
-        return courses.map(getViewModel);
+        const getCourses = await courses.find(filter).toArray();
+        return getCourses.map(getViewModel);
     },
     getCourseById: async (id: number): Promise<CourseViewModel | null> => {
-        const course = db.courses.find(course => course.id === id);
-        if(!course){
+        const getCourse = await courses.findOne({id});
+        if(!getCourse){
             return null;
         }
-        return getViewModel(course);
+        return getViewModel(getCourse);
     },
     deleteCourse: async (id: number):Promise<boolean> => {
-        const index = db.courses.findIndex(course => course.id === id);
-        if(index === -1){
-            return false;
-        }
-        db.courses.splice(index, 1);
-        return true;
+        const result = await courses.deleteOne({id});
+        return result.deletedCount === 1;
     },
     createCourse: async (name: string):Promise<CourseViewModel> => {
         const newCourse = {
@@ -31,15 +28,19 @@ export const coursesRepository = {
             name,
             studentsAmount: 0
         };
-        db.courses.push(newCourse);
+        const result = await courses.insertOne(newCourse);
         return getViewModel(newCourse);
     },
     updateCourse: async (id: number, name: string): Promise<CourseViewModel | null> => {
-        const course = db.courses.find(course => course.id === id);
-        if(!course){
+        const result = await courses.updateOne({id}, {$set: {name}});
+        if(!result.matchedCount){
             return null;
+        }else{
+            const getCourse = await courses.findOne({id});
+            if(!getCourse){
+                return null;
+            }
+            return getViewModel(getCourse);
         }
-        course.name = name;
-        return getViewModel(course);
     }
 }

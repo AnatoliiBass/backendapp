@@ -12,29 +12,29 @@ import type { CourseURIParamsModel } from "../models/CourseURIParamsModel";
 import type { CourseCreateModel } from "../models/CourseCreateModel";
 import type { CourseUpdateModel } from "../models/CourseUpdateModel";
 import { HTTP_STATUSES } from "../utils/httpstatuses";
-import { coursesRepository } from "../repositories/courses";
+import { coursesRepository } from "../repositories/coursesFromDB";
 import { nameValidator } from "../utils/helpersValidator";
 import { coursesValidation } from "../middelwares/validation";
 
 export const coursesRouter = Router();
 coursesRouter.get(
   "/",
-  (
+  async (
     _req: RequestWithQuery<CourseGetWithQueryModel>,
     res: Response<CourseViewModel[]>
   ) => {
-    const courses = coursesRepository.getAllCourses(_req.query.name);
+    const courses = await coursesRepository.getAllCourses(_req.query.name);
     return res.status(HTTP_STATUSES.OK).json(courses);
   }
 );
 
 coursesRouter.get(
   "/:id(\\d+)",
-  (
+  async (
     _req: RequestWithParams<CourseURIParamsModel>,
     res: Response<CourseViewModel | null>
   ) => {
-    const course = coursesRepository.getCourseById(+_req.params.id);
+    const course = await coursesRepository.getCourseById(+_req.params.id);
     if (!course) {
       res.statusCode = HTTP_STATUSES.NOT_FOUND;
       res.statusMessage = "Course not found";
@@ -46,8 +46,8 @@ coursesRouter.get(
 
 coursesRouter.delete(
   "/:id(\\d+)",
-  (_req: RequestWithParams<CourseURIParamsModel>, res: Response) => {
-    const isDeleted = coursesRepository.deleteCourse(+_req.params.id);
+  async (_req: RequestWithParams<CourseURIParamsModel>, res: Response) => {
+    const isDeleted = await coursesRepository.deleteCourse(+_req.params.id);
     if (!isDeleted) {
       return res.status(HTTP_STATUSES.NOT_FOUND).send("Course not found");
     }
@@ -59,11 +59,11 @@ coursesRouter.post(
   "/",
   nameValidator,
   coursesValidation,
-  (
+  async (
     _req: RequestWithBody<CourseCreateModel>,
     res: Response<CourseViewModel | null>
   ) => {
-    const newCourse = coursesRepository.createCourse(_req.body.name);
+    const newCourse = await coursesRepository.createCourse(_req.body.name);
     return res.status(HTTP_STATUSES.CREATED).json(newCourse);
   }
 );
@@ -72,11 +72,11 @@ coursesRouter.put(
   "/:id(\\d+)",
   nameValidator,
   coursesValidation,
-  (
+  async (
     _req: RequestWithParamsAndBody<CourseURIParamsModel, CourseUpdateModel>,
     res: Response<CourseViewModel | null>
   ) => {
-    const course = coursesRepository.updateCourse(
+    const course = await coursesRepository.updateCourse(
       +_req.params.id,
       _req.body.name
     );

@@ -15,6 +15,7 @@ import { HTTP_STATUSES } from "../utils/httpstatuses";
 import { coursesServises } from "../servises/courses";
 import { nameValidator } from "../utils/helpersValidator";
 import { coursesValidation } from "../middelwares/validation";
+import { coursesRepositoryQueries } from "../repositories/coursesFromDBQueries";
 
 export const coursesRouter = Router();
 coursesRouter.get(
@@ -23,7 +24,7 @@ coursesRouter.get(
     _req: RequestWithQuery<CourseGetWithQueryModel>,
     res: Response<CourseViewModel[]>
   ) => {
-    const courses = await coursesServises.getAllCourses(_req.query.name);
+    const courses = await coursesRepositoryQueries.getAllCourses(_req.query.name);
     return res.status(HTTP_STATUSES.OK).json(courses);
   }
 );
@@ -34,7 +35,7 @@ coursesRouter.get(
     _req: RequestWithParams<CourseURIParamsModel>,
     res: Response<CourseViewModel | null>
   ) => {
-    const course = await coursesServises.getCourseById(+_req.params.id);
+    const course = await coursesRepositoryQueries.getCourseById(+_req.params.id);
     if (!course) {
       res.statusCode = HTTP_STATUSES.NOT_FOUND;
       res.statusMessage = "Course not found";

@@ -15,13 +15,14 @@ const httpstatuses_1 = require("../utils/httpstatuses");
 const courses_1 = require("../servises/courses");
 const helpersValidator_1 = require("../utils/helpersValidator");
 const validation_1 = require("../middelwares/validation");
+const coursesFromDBQueries_1 = require("../repositories/coursesFromDBQueries");
 exports.coursesRouter = (0, express_1.Router)();
 exports.coursesRouter.get("/", (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const courses = yield courses_1.coursesServises.getAllCourses(_req.query.name);
+    const courses = yield coursesFromDBQueries_1.coursesRepositoryQueries.getAllCourses(_req.query.name);
     return res.status(httpstatuses_1.HTTP_STATUSES.OK).json(courses);
 }));
 exports.coursesRouter.get("/:id(\\d+)", (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const course = yield courses_1.coursesServises.getCourseById(+_req.params.id);
+    const course = yield coursesFromDBQueries_1.coursesRepositoryQueries.getCourseById(+_req.params.id);
     if (!course) {
         res.statusCode = httpstatuses_1.HTTP_STATUSES.NOT_FOUND;
         res.statusMessage = "Course not found";

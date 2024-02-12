@@ -9,10 +9,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.coursesRepository = void 0;
+exports.coursesRepositoryQueries = void 0;
 const db_1 = require("../db/db");
 const getViewModel_1 = require("../utils/getViewModel");
-exports.coursesRepository = {
+exports.coursesRepositoryQueries = {
     getAllCourses: (name) => __awaiter(void 0, void 0, void 0, function* () {
         let filter = {};
         if (name) {
@@ -27,28 +27,6 @@ exports.coursesRepository = {
             return null;
         }
         return (0, getViewModel_1.getViewModel)(getCourse);
-    }),
-    deleteCourse: (id) => __awaiter(void 0, void 0, void 0, function* () {
-        const result = yield db_1.courses.deleteOne({ id });
-        return result.deletedCount === 1;
-    }),
-    createCourse: (course) => __awaiter(void 0, void 0, void 0, function* () {
-        const result = yield db_1.courses.insertOne(course);
-        console.log("Created result: ", result);
-        return (0, getViewModel_1.getViewModel)(course);
-    }),
-    updateCourse: (id, name) => __awaiter(void 0, void 0, void 0, function* () {
-        const result = yield db_1.courses.updateOne({ id }, { $set: { name } });
-        if (!result.matchedCount) {
-            return null;
-        }
-        else {
-            const getCourse = yield db_1.courses.findOne({ id });
-            if (!getCourse) {
-                return null;
-            }
-            return (0, getViewModel_1.getViewModel)(getCourse);
-        }
     })
 };
-//# sourceMappingURL=coursesFromDB.js.map
+//# sourceMappingURL=coursesFromDBQueries.js.map

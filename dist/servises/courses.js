@@ -10,16 +10,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.coursesServises = void 0;
-const coursesFromDB_1 = require("../repositories/coursesFromDB");
+const coursesFromDBCommand_1 = require("../repositories/coursesFromDBCommand");
 exports.coursesServises = {
-    getAllCourses: (name) => __awaiter(void 0, void 0, void 0, function* () {
-        return yield coursesFromDB_1.coursesRepository.getAllCourses(name);
-    }),
-    getCourseById: (id) => __awaiter(void 0, void 0, void 0, function* () {
-        return yield coursesFromDB_1.coursesRepository.getCourseById(id);
-    }),
     deleteCourse: (id) => __awaiter(void 0, void 0, void 0, function* () {
-        return yield coursesFromDB_1.coursesRepository.deleteCourse(id);
+        return yield coursesFromDBCommand_1.coursesRepositoryCommand.deleteCourse(id);
     }),
     createCourse: (name) => __awaiter(void 0, void 0, void 0, function* () {
         const newCourse = {
@@ -27,10 +21,10 @@ exports.coursesServises = {
             name,
             studentsAmount: 0
         };
-        return yield coursesFromDB_1.coursesRepository.createCourse(newCourse);
+        return yield coursesFromDBCommand_1.coursesRepositoryCommand.createCourse(newCourse);
     }),
     updateCourse: (id, name) => __awaiter(void 0, void 0, void 0, function* () {
-        return yield coursesFromDB_1.coursesRepository.updateCourse(id, name);
+        return yield coursesFromDBCommand_1.coursesRepositoryCommand.updateCourse(id, name);
     })
 };
 //# sourceMappingURL=courses.js.map

@@ -1,16 +1,10 @@
 import { Course } from "../types";
 import type { CourseViewModel } from "../models/CourseViewModel";
-import {coursesRepository} from "../repositories/coursesFromDB"
+import {coursesRepositoryCommand} from "../repositories/coursesFromDBCommand"
 
 export const coursesServises = {
-    getAllCourses: async (name: string | undefined): Promise<CourseViewModel[]> => {
-        return await coursesRepository.getAllCourses(name)
-    },
-    getCourseById: async (id: number): Promise<CourseViewModel | null> => {
-        return await coursesRepository.getCourseById(id)
-    },
     deleteCourse: async (id: number):Promise<boolean> => {
-        return await coursesRepository.deleteCourse(id)
+        return await coursesRepositoryCommand.deleteCourse(id)
     },
     createCourse: async (name: string):Promise<CourseViewModel> => {
         const newCourse: Course = {
@@ -18,9 +12,9 @@ export const coursesServises = {
             name,
             studentsAmount: 0
         };
-        return await coursesRepository.createCourse(newCourse)
+        return await coursesRepositoryCommand.createCourse(newCourse)
     },
     updateCourse: async (id: number, name: string): Promise<CourseViewModel | null> => {
-        return await coursesRepository.updateCourse(id, name)
+        return await coursesRepositoryCommand.updateCourse(id, name)
     }
 }

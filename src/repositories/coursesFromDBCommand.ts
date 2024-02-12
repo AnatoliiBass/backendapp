@@ -3,22 +3,7 @@ import { courses } from "../db/db";
 import { getViewModel } from "../utils/getViewModel";
 import type { Course } from "../types";
 
-export const coursesRepository = {
-    getAllCourses: async (name: string | undefined): Promise<CourseViewModel[]> => {
-        let filter = {};
-        if(name){
-            filter = {name: {$regex: name}};
-        }
-        const getCourses = await courses.find(filter).toArray();
-        return getCourses.map(getViewModel);
-    },
-    getCourseById: async (id: number): Promise<CourseViewModel | null> => {
-        const getCourse = await courses.findOne({id});
-        if(!getCourse){
-            return null;
-        }
-        return getViewModel(getCourse);
-    },
+export const coursesRepositoryCommand = {
     deleteCourse: async (id: number):Promise<boolean> => {
         const result = await courses.deleteOne({id});
         return result.deletedCount === 1;

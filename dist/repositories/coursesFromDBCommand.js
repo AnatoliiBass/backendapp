@@ -19,8 +19,9 @@ exports.coursesRepositoryCommand = {
     }),
     createCourse: (course) => __awaiter(void 0, void 0, void 0, function* () {
         const result = yield db_1.courses.insertOne(course);
+        const author = yield db_1.authors.findOne({ id: course.author_id });
         console.log("Created result: ", result);
-        return (0, getViewModel_1.getViewModel)(course);
+        return (0, getViewModel_1.getViewModel)(course, author);
     }),
     updateCourse: (id, name) => __awaiter(void 0, void 0, void 0, function* () {
         const result = yield db_1.courses.updateOne({ id }, { $set: { name } });
@@ -32,7 +33,11 @@ exports.coursesRepositoryCommand = {
             if (!getCourse) {
                 return null;
             }
-            return (0, getViewModel_1.getViewModel)(getCourse);
+            const author = yield db_1.authors.findOne({ id: getCourse.author_id });
+            if (!author) {
+                return null;
+            }
+            return (0, getViewModel_1.getViewModel)(getCourse, author);
         }
     })
 };

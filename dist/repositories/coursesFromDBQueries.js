@@ -19,14 +19,20 @@ exports.coursesRepositoryQueries = {
             filter = { name: { $regex: name } };
         }
         const getCourses = yield db_1.courses.find(filter).toArray();
-        return getCourses.map(getViewModel_1.getViewModel);
+        const coursesWithAuthor = [];
+        getCourses.forEach((course) => __awaiter(void 0, void 0, void 0, function* () {
+            const author = yield db_1.authors.findOne({ id: course.author_id });
+            coursesWithAuthor.push((0, getViewModel_1.getViewModel)(course, author));
+        }));
+        return coursesWithAuthor;
     }),
     getCourseById: (id) => __awaiter(void 0, void 0, void 0, function* () {
         const getCourse = yield db_1.courses.findOne({ id });
         if (!getCourse) {
             return null;
         }
-        return (0, getViewModel_1.getViewModel)(getCourse);
+        const author = yield db_1.authors.findOne({ id: getCourse.author_id });
+        return (0, getViewModel_1.getViewModel)(getCourse, author);
     })
 };
 //# sourceMappingURL=coursesFromDBQueries.js.map

@@ -11,7 +11,14 @@ export type RequestWithParamsAndBodyAndQuery<Params, Body, Query> = Request<Para
 export type Course = {
     id: number,
     name: string,
-    studentsAmount: number
+    studentsAmount: number,
+    author_id: number
+}
+
+export type Author = {
+    id: number,
+    first_name: string,
+    last_name: string
 }
 
 export type DbCourses = {

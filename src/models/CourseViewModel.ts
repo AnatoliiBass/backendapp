@@ -4,4 +4,8 @@ export type CourseViewModel = {
      */
     id: number;
     name: string;
+    author: {
+        first_name: string;
+        last_name: string;
+    }
 }

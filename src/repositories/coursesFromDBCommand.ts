@@ -1,5 +1,5 @@
 import type { CourseViewModel } from "../models/CourseViewModel";
-import { courses } from "../db/db";
+import { authors, courses } from "../db/db";
 import { getViewModel } from "../utils/getViewModel";
 import type { Course } from "../types";
 
@@ -10,8 +10,9 @@ export const coursesRepositoryCommand = {
     },
     createCourse: async (course: Course):Promise<CourseViewModel> => {
         const result = await courses.insertOne(course);
+        const author = await authors.findOne({id: course.author_id});
         console.log("Created result: ", result)
-        return getViewModel(course);
+        return getViewModel(course, author);
     },
     updateCourse: async (id: number, name: string): Promise<CourseViewModel | null> => {
         const result = await courses.updateOne({id}, {$set: {name}});
@@ -22,7 +23,11 @@ export const coursesRepositoryCommand = {
             if(!getCourse){
                 return null;
             }
-            return getViewModel(getCourse);
+            const author = await authors.findOne({id: getCourse.author_id});
+            if(!author){
+                return null;
+            }
+            return getViewModel(getCourse, author);
         }
     }
 }

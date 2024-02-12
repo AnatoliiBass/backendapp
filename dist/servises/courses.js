@@ -19,7 +19,8 @@ exports.coursesServises = {
         const newCourse = {
             id: new Date().getTime(),
             name,
-            studentsAmount: 0
+            studentsAmount: 0,
+            author_id: 123
         };
         return yield coursesFromDBCommand_1.coursesRepositoryCommand.createCourse(newCourse);
     }),

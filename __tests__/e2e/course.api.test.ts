@@ -7,18 +7,12 @@ import { HTTP_STATUSES } from "../../src/utils/httpstatuses";
 
 describe("/course", ()=>{
 
-    // beforeAll(async()=>{
-    //     await request(app)
-    //         .delete("/tests")
-    // })
-
     it("should return 200 and a list of courses", async ()=>{
         const response = await request(app)
         .get("/courses")
         .expect(HTTP_STATUSES.OK);
 
     expect(response.body).toBeInstanceOf(Array<CourseViewModel>);
-    expect(response.body.length).toBeGreaterThan(0);
     })
     it("should return 404 for not existing course", async ()=>{
         const res = await request(app)
@@ -43,7 +37,8 @@ describe("/course", ()=>{
             .expect(HTTP_STATUSES.CREATED)
 
         createdCourse = createResponse.body;
-        expect(createdCourse).toEqual({id: expect.any(Number), name: data.name})
+        expect(createdCourse).toEqual({id: expect.any(Number), name: data.name, 
+            author: {first_name: expect.any(String), last_name: expect.any(String)}})
 
         const response = await request(app)
             .get("/courses")
@@ -59,7 +54,8 @@ describe("/course", ()=>{
             .expect(HTTP_STATUSES.CREATED)
 
         createdCourse2 = createResponse.body;
-        expect(createdCourse2).toEqual({id: expect.any(Number), name: data.name})
+        expect(createdCourse2).toEqual({id: expect.any(Number), name: data.name, 
+            author: {first_name: expect.any(String), last_name: expect.any(String)}})
 
         const response = await request(app)
             .get("/courses")

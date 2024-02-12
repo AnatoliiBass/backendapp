@@ -9,32 +9,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.runDB = exports.courses = exports.database = exports.db = void 0;
+exports.runDB = exports.authors = exports.courses = exports.database = void 0;
 const mongodb_1 = require("mongodb");
-exports.db = {
-    courses: [
-        {
-            id: 1,
-            name: 'front-end',
-            studentsAmount: 10
-        },
-        {
-            id: 2,
-            name: 'back-end',
-            studentsAmount: 20
-        },
-        {
-            id: 3,
-            name: 'devops',
-            studentsAmount: 30
-        },
-        {
-            id: 4,
-            name: 'fullstack',
-            studentsAmount: 40
-        }
-    ]
-};
 const url = process.env.MongoURI || "mongodb+srv://anatolii:zRfPyrXqc1s3kB93@cluster0.dvhwtgl.mongodb.net/?retryWrites=true&w=majority";
 const client = new mongodb_1.MongoClient(url, {
     serverApi: {
@@ -45,6 +21,7 @@ const client = new mongodb_1.MongoClient(url, {
 });
 exports.database = client.db("Learning");
 exports.courses = exports.database.collection("Courses");
+exports.authors = exports.database.collection("Authors");
 const runDB = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield client.connect();

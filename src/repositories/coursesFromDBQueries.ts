@@ -1,5 +1,5 @@
 import type { CourseViewModel } from "../models/CourseViewModel";
-import { courses } from "../db/db";
+import { courses, authors } from "../db/db";
 import { getViewModel } from "../utils/getViewModel";
 
 export const coursesRepositoryQueries = {
@@ -9,13 +9,19 @@ export const coursesRepositoryQueries = {
             filter = {name: {$regex: name}};
         }
         const getCourses = await courses.find(filter).toArray();
-        return getCourses.map(getViewModel);
+        const coursesWithAuthor:CourseViewModel[] = []
+        getCourses.forEach(async(course) => {
+            const author = await authors.findOne({id: course.author_id})
+            coursesWithAuthor.push(getViewModel(course, author))
+        });
+        return coursesWithAuthor
     },
     getCourseById: async (id: number): Promise<CourseViewModel | null> => {
         const getCourse = await courses.findOne({id});
         if(!getCourse){
             return null;
         }
-        return getViewModel(getCourse);
+        const author = await authors.findOne({id: getCourse.author_id});
+        return getViewModel(getCourse, author);
     }
 }

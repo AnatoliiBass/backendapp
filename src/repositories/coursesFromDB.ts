@@ -1,6 +1,7 @@
 import type { CourseViewModel } from "../models/CourseViewModel";
 import { courses } from "../db/db";
 import { getViewModel } from "../utils/getViewModel";
+import type { Course } from "../types";
 
 export const coursesRepository = {
     getAllCourses: async (name: string | undefined): Promise<CourseViewModel[]> => {
@@ -22,14 +23,10 @@ export const coursesRepository = {
         const result = await courses.deleteOne({id});
         return result.deletedCount === 1;
     },
-    createCourse: async (name: string):Promise<CourseViewModel> => {
-        const newCourse = {
-            id: new Date().getTime(),
-            name,
-            studentsAmount: 0
-        };
-        const result = await courses.insertOne(newCourse);
-        return getViewModel(newCourse);
+    createCourse: async (course: Course):Promise<CourseViewModel> => {
+        const result = await courses.insertOne(course);
+        console.log("Created result: ", result)
+        return getViewModel(course);
     },
     updateCourse: async (id: number, name: string): Promise<CourseViewModel | null> => {
         const result = await courses.updateOne({id}, {$set: {name}});

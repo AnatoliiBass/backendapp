@@ -32,14 +32,10 @@ exports.coursesRepository = {
         const result = yield db_1.courses.deleteOne({ id });
         return result.deletedCount === 1;
     }),
-    createCourse: (name) => __awaiter(void 0, void 0, void 0, function* () {
-        const newCourse = {
-            id: new Date().getTime(),
-            name,
-            studentsAmount: 0
-        };
-        const result = yield db_1.courses.insertOne(newCourse);
-        return (0, getViewModel_1.getViewModel)(newCourse);
+    createCourse: (course) => __awaiter(void 0, void 0, void 0, function* () {
+        const result = yield db_1.courses.insertOne(course);
+        console.log("Created result: ", result);
+        return (0, getViewModel_1.getViewModel)(course);
     }),
     updateCourse: (id, name) => __awaiter(void 0, void 0, void 0, function* () {
         const result = yield db_1.courses.updateOne({ id }, { $set: { name } });

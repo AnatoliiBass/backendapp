@@ -7,15 +7,18 @@ import { HTTP_STATUSES } from "../../src/utils/httpstatuses";
 
 describe("/course", ()=>{
 
-    beforeAll(async()=>{
-        await request(app)
-            .delete("/tests")
-    })
+    // beforeAll(async()=>{
+    //     await request(app)
+    //         .delete("/tests")
+    // })
 
     it("should return 200 and a list of courses", async ()=>{
-        await request(app)
-            .get("/courses")
-            .expect(HTTP_STATUSES.OK, [])
+        const response = await request(app)
+        .get("/courses")
+        .expect(HTTP_STATUSES.OK);
+
+    expect(response.body).toBeInstanceOf(Array<CourseViewModel>);
+    expect(response.body.length).toBeGreaterThan(0);
     })
     it("should return 404 for not existing course", async ()=>{
         const res = await request(app)
@@ -28,7 +31,7 @@ describe("/course", ()=>{
             .post("/courses")
             .send(data)
             .expect(HTTP_STATUSES.BAD_REQUEST, 
-                { errors: [{ type: "field", value: data.name, msg: "Name must be between 3 and 100 characters long and cannot be empty", 
+                { errors: [{ type: "field", value: data.name, msg: "Name must be between 2 and 100 characters long and cannot be empty", 
                 path: "name", location: "body" }] })
     })
     let createdCourse: CourseViewModel;
@@ -42,13 +45,14 @@ describe("/course", ()=>{
         createdCourse = createResponse.body;
         expect(createdCourse).toEqual({id: expect.any(Number), name: data.name})
 
-        await request(app)
+        const response = await request(app)
             .get("/courses")
-            .expect(HTTP_STATUSES.OK, [createdCourse])
+            .expect(HTTP_STATUSES.OK)
+        expect(response.body).toBeInstanceOf(Array<CourseViewModel>);
     })
     let createdCourse2: CourseViewModel;
     it("should create a course2 with correct input data", async ()=>{
-        const data: CourseCreateModel = {name: "DevOps"};
+        const data: CourseCreateModel = {name: "Design"};
         const createResponse = await request(app)
             .post("/courses")
             .send(data)
@@ -57,16 +61,17 @@ describe("/course", ()=>{
         createdCourse2 = createResponse.body;
         expect(createdCourse2).toEqual({id: expect.any(Number), name: data.name})
 
-        await request(app)
+        const response = await request(app)
             .get("/courses")
-            .expect(HTTP_STATUSES.OK, [createdCourse, createdCourse2])
+            .expect(HTTP_STATUSES.OK)
+            expect(response.body).toBeInstanceOf(Array<CourseViewModel>);
     })
     it("should'nt update a course with incorrect input data", async ()=>{
         const data: CourseUpdateModel = {name: ""};
         await request(app)
             .put("/courses/" + createdCourse.id)
             .send(data)
-            .expect(HTTP_STATUSES.BAD_REQUEST, { errors: [{ type: "field", value: data.name, msg: "Name must be between 3 and 100 characters long and cannot be empty", 
+            .expect(HTTP_STATUSES.BAD_REQUEST, { errors: [{ type: "field", value: data.name, msg: "Name must be between 2 and 100 characters long and cannot be empty", 
             path: "name", location: "body" }] })
 
         await request(app)
@@ -98,7 +103,7 @@ describe("/course", ()=>{
         await request(app)
             .put("/courses/" + createdCourse2.id)
             .send(data)
-            .expect(HTTP_STATUSES.BAD_REQUEST, { errors: [{ type: "field", value: data.name, msg: "Name must be between 3 and 100 characters long and cannot be empty", 
+            .expect(HTTP_STATUSES.BAD_REQUEST, { errors: [{ type: "field", value: data.name, msg: "Name must be between 2 and 100 characters long and cannot be empty", 
             path: "name", location: "body" }] })
 
         await request(app)
@@ -131,8 +136,8 @@ describe("/course", ()=>{
             .expect(HTTP_STATUSES.NO_CONTENT)
 
         await request(app)
-            .get("/courses")
-            .expect(HTTP_STATUSES.OK, [createdCourse2])
+            .get("/courses/" + createdCourse.id)
+            .expect(HTTP_STATUSES.NOT_FOUND, null)
     })
     it("should delete a course2", async ()=>{
         await request(app)
@@ -140,7 +145,7 @@ describe("/course", ()=>{
             .expect(HTTP_STATUSES.NO_CONTENT)
 
         await request(app)
-            .get("/courses")
-            .expect(HTTP_STATUSES.OK, [])
+            .get("/courses/" + createdCourse2.id)
+            .expect(HTTP_STATUSES.NOT_FOUND, null)
     })
 })

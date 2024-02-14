@@ -17,5 +17,5 @@ export const coursesServises = {
     },
     updateCourse: async (id: number, name: string): Promise<CourseViewModel | null> => {
         return await coursesRepositoryCommand.updateCourse(id, name)
-    }
+    } 
 }

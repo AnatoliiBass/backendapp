@@ -9,12 +9,15 @@ export const coursesRepositoryQueries = {
             filter = {name: {$regex: name}};
         }
         const getCourses = await courses.find(filter).toArray();
-        const coursesWithAuthor:CourseViewModel[] = []
-        getCourses.forEach(async(course) => {
-            const author = await authors.findOne({id: course.author_id})
-            coursesWithAuthor.push(getViewModel(course, author))
-        });
-        return coursesWithAuthor
+        const coursesWithAuthor:CourseViewModel[] = [];
+        console.log("getCourses: ", getCourses);
+        for await (const course of getCourses){
+            const author = await authors.findOne({id: course.author_id});
+            if(author){
+                coursesWithAuthor.push(getViewModel(course, author));
+            }
+        }
+        return coursesWithAuthor;
     },
     getCourseById: async (id: number): Promise<CourseViewModel | null> => {
         const getCourse = await courses.findOne({id});

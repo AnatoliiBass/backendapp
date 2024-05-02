@@ -1,7 +1,7 @@
 import { MongoClient, ServerApiVersion } from "mongodb";
 import type { Author, Course } from "../types";
 
-const url = process.env.MongoURI || "mongodb+srv://anatolii:zRfPyrXqc1s3kB93@cluster0.dvhwtgl.mongodb.net/?retryWrites=true&w=majority";
+const url = process.env.MongoURI || "mongodb+srv://anatolii:oy9CmAVu1orhHfkw@cluster0.rmiojst.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 const client = new MongoClient(url, {
     serverApi: {
       version: ServerApiVersion.v1,

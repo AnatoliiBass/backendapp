@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.startApp = void 0;
 const app_1 = require("./app");
 const db_1 = require("./db/db");
 const port = process.env.PORT || 3003;
@@ -18,5 +19,6 @@ const startApp = () => __awaiter(void 0, void 0, void 0, function* () {
         console.log(`Server is running on port ${port}`);
     });
 });
-startApp();
+exports.startApp = startApp;
+(0, exports.startApp)();
 //# sourceMappingURL=index.js.map

@@ -11,9 +11,6 @@ const client = new MongoClient(url, {
   });
   console.log("URL: ", url);
   console.log("Client: ", client);
-export const database = client.db("Learning");
-export const courses = database.collection<Course>("Courses");
-export const authors = database.collection<Author>("Authors");
 export const runDB = async () => {
     try {
         await client.connect();
@@ -22,3 +19,6 @@ export const runDB = async () => {
         await client.close();
     }
 };
+export const database = client.db("Learning");
+export const courses = database.collection<Course>("Courses");
+export const authors = database.collection<Author>("Authors");

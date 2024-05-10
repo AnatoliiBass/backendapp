@@ -16,48 +16,53 @@ var __asyncValues = (this && this.__asyncValues) || function (o) {
     function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.coursesRepositoryQueries = void 0;
+exports.authorsRepositoryQueries = void 0;
 const db_1 = require("../db/db");
-const getViewModelCourse_1 = require("../utils/getViewModelCourse");
-exports.coursesRepositoryQueries = {
-    getAllCourses: (name) => __awaiter(void 0, void 0, void 0, function* () {
+const getViewModelAuthor_1 = require("../utils/getViewModelAuthor");
+exports.authorsRepositoryQueries = {
+    getAllAuthors: (name) => __awaiter(void 0, void 0, void 0, function* () {
         var _a, e_1, _b, _c;
         let filter = {};
         if (name) {
-            filter = { name: { $regex: name } };
+            filter = {
+                $or: [
+                    { first_name: { $regex: name } },
+                    { last_name: { $regex: name } },
+                ],
+            };
         }
-        const getCourses = yield db_1.courses.find(filter).toArray();
-        const coursesWithAuthor = [];
-        console.log("getCourses: ", getCourses);
-        if (getCourses.length > 0) {
+        const getAuthors = yield db_1.authors.find(filter).toArray();
+        const authorsWithCourses = [];
+        console.log("getAuthors: ", getAuthors);
+        if (getAuthors.length > 0) {
             try {
-                for (var _d = true, getCourses_1 = __asyncValues(getCourses), getCourses_1_1; getCourses_1_1 = yield getCourses_1.next(), _a = getCourses_1_1.done, !_a; _d = true) {
-                    _c = getCourses_1_1.value;
+                for (var _d = true, getAuthors_1 = __asyncValues(getAuthors), getAuthors_1_1; getAuthors_1_1 = yield getAuthors_1.next(), _a = getAuthors_1_1.done, !_a; _d = true) {
+                    _c = getAuthors_1_1.value;
                     _d = false;
-                    const course = _c;
-                    const author = yield db_1.authors.findOne({ id: course.author_id });
+                    const author = _c;
+                    const course = yield db_1.courses.find({ author_id: author.id }).toArray();
                     if (author) {
-                        coursesWithAuthor.push((0, getViewModelCourse_1.getViewModelCourse)(course, author));
+                        authorsWithCourses.push((0, getViewModelAuthor_1.getViewModelAuthor)(course, author));
                     }
                 }
             }
             catch (e_1_1) { e_1 = { error: e_1_1 }; }
             finally {
                 try {
-                    if (!_d && !_a && (_b = getCourses_1.return)) yield _b.call(getCourses_1);
+                    if (!_d && !_a && (_b = getAuthors_1.return)) yield _b.call(getAuthors_1);
                 }
                 finally { if (e_1) throw e_1.error; }
             }
         }
-        return coursesWithAuthor;
+        return authorsWithCourses;
     }),
-    getCourseById: (id) => __awaiter(void 0, void 0, void 0, function* () {
-        const getCourse = yield db_1.courses.findOne({ id });
-        if (!getCourse) {
+    getAuthorById: (id) => __awaiter(void 0, void 0, void 0, function* () {
+        const getAuthor = yield db_1.authors.findOne({ id });
+        if (!getAuthor) {
             return null;
         }
-        const author = yield db_1.authors.findOne({ id: getCourse.author_id });
-        return (0, getViewModelCourse_1.getViewModelCourse)(getCourse, author);
+        const course = yield db_1.courses.find({ author_id: getAuthor.id }).toArray();
+        return (0, getViewModelAuthor_1.getViewModelAuthor)(course, getAuthor);
     }),
 };
-//# sourceMappingURL=coursesFromDBQueries.js.map
+//# sourceMappingURL=authorsFromDBQueries.js.map

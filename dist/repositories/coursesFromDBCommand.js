@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.coursesRepositoryCommand = void 0;
 const db_1 = require("../db/db");
-const getViewModel_1 = require("../utils/getViewModel");
+const getViewModelCourse_1 = require("../utils/getViewModelCourse");
 exports.coursesRepositoryCommand = {
     deleteCourse: (id) => __awaiter(void 0, void 0, void 0, function* () {
         const result = yield db_1.courses.deleteOne({ id });
@@ -21,7 +21,7 @@ exports.coursesRepositoryCommand = {
         const result = yield db_1.courses.insertOne(course);
         const author = yield db_1.authors.findOne({ id: course.author_id });
         console.log("Created result: ", result);
-        return (0, getViewModel_1.getViewModel)(course, author);
+        return (0, getViewModelCourse_1.getViewModelCourse)(course, author);
     }),
     updateCourse: (id, name) => __awaiter(void 0, void 0, void 0, function* () {
         const result = yield db_1.courses.updateOne({ id }, { $set: { name } });
@@ -37,7 +37,7 @@ exports.coursesRepositoryCommand = {
             if (!author) {
                 return null;
             }
-            return (0, getViewModel_1.getViewModel)(getCourse, author);
+            return (0, getViewModelCourse_1.getViewModelCourse)(getCourse, author);
         }
     })
 };

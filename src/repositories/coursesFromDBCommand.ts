@@ -1,6 +1,6 @@
 import type { CourseViewModel } from "../models/CourseViewModel";
 import { authors, courses } from "../db/db";
-import { getViewModel } from "../utils/getViewModel";
+import { getViewModelCourse } from "../utils/getViewModelCourse";
 import type { Course } from "../types";
 
 export const coursesRepositoryCommand = {
@@ -12,7 +12,7 @@ export const coursesRepositoryCommand = {
         const result = await courses.insertOne(course);
         const author = await authors.findOne({id: course.author_id});
         console.log("Created result: ", result)
-        return getViewModel(course, author);
+        return getViewModelCourse(course, author);
     },
     updateCourse: async (id: number, name: string): Promise<CourseViewModel | null> => {
         const result = await courses.updateOne({id}, {$set: {name}});
@@ -27,7 +27,7 @@ export const coursesRepositoryCommand = {
             if(!author){
                 return null;
             }
-            return getViewModel(getCourse, author);
+            return getViewModelCourse(getCourse, author);
         }
     }
 }

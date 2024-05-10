@@ -5,7 +5,7 @@ import type { CourseCreateModel } from "../../src/models/CourseCreateModel";
 import type { CourseUpdateModel } from "../../src/models/CourseUpdateModel";
 import { HTTP_STATUSES } from "../../src/utils/httpstatuses";
 
-describe("/course", ()=>{
+describe("/courses", ()=>{
 
     it("should return 200 and a list of courses", async ()=>{
         const response = await request(app)
@@ -18,6 +18,11 @@ describe("/course", ()=>{
         const res = await request(app)
             .get("/courses/0")
             .expect(HTTP_STATUSES.NOT_FOUND, null);
+    })
+    it("should return 200 for existing course", async ()=>{
+        const res = await request(app)
+            .get("/courses/1714483108614")
+            .expect(HTTP_STATUSES.OK, {id: 1714483108614, name: "QA", author: {first_name: "Anatolii", last_name: "Bas"}});
     })
     it("should'nt create a course with incorrect input data", async ()=>{
         const data: CourseCreateModel = {name: ""};

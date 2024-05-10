@@ -25,8 +25,6 @@ exports.authors = exports.database.collection("Authors");
 const runDB = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield client.connect();
-        console.log(exports.database.databaseName);
-        console.log(exports.courses.collectionName);
     }
     catch (error) {
         console.log("Error: " + error);

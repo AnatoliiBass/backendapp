@@ -15,8 +15,6 @@ export const authors = database.collection<Author>("Authors");
 export const runDB = async () => {
     try {
         await client.connect();
-        console.log(database.databaseName)
-        console.log(courses.collectionName)
     } catch (error) {
         console.log("Error: " + error)
         await client.close();

@@ -19,6 +19,8 @@ const client = new mongodb_1.MongoClient(url, {
         deprecationErrors: true,
     }
 });
+console.log("URL: ", url);
+console.log("Client: ", client);
 exports.database = client.db("Learning");
 exports.courses = exports.database.collection("Courses");
 exports.authors = exports.database.collection("Authors");

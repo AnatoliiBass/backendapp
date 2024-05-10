@@ -19,4 +19,5 @@ const startApp = () => __awaiter(void 0, void 0, void 0, function* () {
     });
 });
 startApp();
+exports.default = app_1.app;
 //# sourceMappingURL=index.js.map

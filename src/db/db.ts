@@ -15,9 +15,9 @@ const client = new MongoClient(url, {
   console.log("Client: ", client);
 export const runDB = async () => {
     try {
-        await client.connect();
+        await client.connect().catch((error) => {console.log("Error inside connect: ", error)});
     } catch (error) {
-        console.log("Error: " + error)
+        console.log("Error inside when try connect: " + error)
         await client.close();
     }
 };

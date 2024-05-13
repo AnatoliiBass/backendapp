@@ -25,10 +25,10 @@ console.log("URL: ", url);
 console.log("Client: ", client);
 const runDB = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        yield client.connect();
+        yield client.connect().catch((error) => { console.log("Error inside connect: ", error); });
     }
     catch (error) {
-        console.log("Error: " + error);
+        console.log("Error inside when try connect: " + error);
         yield client.close();
     }
 });

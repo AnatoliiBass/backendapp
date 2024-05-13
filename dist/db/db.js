@@ -15,8 +15,8 @@ const url = process.env.MongoURI || "mongodb+srv://anatolii:oy9CmAVu1orhHfkw@clu
 const client = new mongodb_1.MongoClient(url, {
     serverApi: {
         version: mongodb_1.ServerApiVersion.v1,
-        strict: true,
-        deprecationErrors: true,
+        // strict: true,
+        // deprecationErrors: true,
     }
 });
 console.log("URL: ", url);

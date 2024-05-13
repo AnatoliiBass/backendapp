@@ -15,11 +15,11 @@ const url = process.env.MongoURI || "mongodb+srv://anatolii:oy9CmAVu1orhHfkw@clu
 const client = new mongodb_1.MongoClient(url, {
     family: 4,
     connectTimeoutMS: 100000,
-    // serverApi: {
-    //   version: ServerApiVersion.v1,
-    //   // strict: true,
-    //   // deprecationErrors: true,
-    // }
+    serverApi: {
+        version: mongodb_1.ServerApiVersion.v1,
+        strict: true,
+        deprecationErrors: true,
+    }
 });
 console.log("URL: ", url);
 console.log("Client: ", client);

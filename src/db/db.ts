@@ -3,6 +3,7 @@ import type { Author, Course } from "../types";
 
 const url = process.env.MongoURI || "mongodb+srv://anatolii:oy9CmAVu1orhHfkw@cluster0.rmiojst.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 const client = new MongoClient(url, {
+  family: 4,
     // serverApi: {
     //   version: ServerApiVersion.v1,
     //   // strict: true,

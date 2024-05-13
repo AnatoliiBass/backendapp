@@ -36,4 +36,18 @@ export const authorsRepositoryQueries = {
     const course = await courses.find({ author_id: getAuthor.id }).toArray();
     return getViewModelAuthor(course, getAuthor);
   },
+  getAuthorByFullName: async (first_name: string, last_name: string): Promise<AuthorViewModel[]> => {
+    const getAuthors = await authors.find({ first_name, last_name }).toArray();
+    console.log("getAuthors: ", getAuthors);
+    const authorsWithCourses: AuthorViewModel[] = [];
+    if (getAuthors.length > 0) {
+      for await (const author of getAuthors) {
+        const course = await courses.find({ author_id: author.id }).toArray();
+        if (author) {
+          authorsWithCourses.push(getViewModelAuthor(course, author));
+        }
+      }
+    }
+    return authorsWithCourses;
+  },
 };

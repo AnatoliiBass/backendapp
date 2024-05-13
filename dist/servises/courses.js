@@ -11,16 +11,29 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.coursesServises = void 0;
 const coursesFromDBCommand_1 = require("../repositories/coursesFromDBCommand");
+const authorsFromDBQueries_1 = require("../repositories/authorsFromDBQueries");
+const authorsFromDBCommand_1 = require("../repositories/authorsFromDBCommand");
 exports.coursesServises = {
     deleteCourse: (id) => __awaiter(void 0, void 0, void 0, function* () {
         return yield coursesFromDBCommand_1.coursesRepositoryCommand.deleteCourse(id);
     }),
-    createCourse: (name) => __awaiter(void 0, void 0, void 0, function* () {
+    createCourse: (name, author_first_name, author_last_name) => __awaiter(void 0, void 0, void 0, function* () {
+        let author_id = 0;
+        const authors = yield authorsFromDBQueries_1.authorsRepositoryQueries.getAuthorByFullName(author_first_name, author_last_name);
+        if (authors.length > 0) {
+            author_id = authors[0].id;
+        }
+        else {
+            const newAuthor = yield authorsFromDBCommand_1.authorsRepositoryCommand.createAuthor({ id: new Date().getTime(), first_name: author_first_name, last_name: author_last_name });
+            if (newAuthor) {
+                author_id = newAuthor.id;
+            }
+        }
         const newCourse = {
             id: new Date().getTime(),
             name,
             studentsAmount: 0,
-            author_id: 123
+            author_id
         };
         return yield coursesFromDBCommand_1.coursesRepositoryCommand.createCourse(newCourse);
     }),

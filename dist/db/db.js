@@ -21,8 +21,6 @@ const client = new mongodb_1.MongoClient(url, {
         deprecationErrors: true,
     }
 });
-console.log("URL: ", url);
-console.log("Client: ", client);
 const runDB = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield client.connect().catch((error) => { console.log("Error inside connect: ", error); });

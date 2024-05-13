@@ -25,7 +25,7 @@ describe("/courses", ()=>{
             .expect(HTTP_STATUSES.OK, {id: 1714483108614, name: "QA", author: {first_name: "Anatolii", last_name: "Bas"}});
     })
     it("should'nt create a course with incorrect input data", async ()=>{
-        const data: CourseCreateModel = {name: ""};
+        const data: CourseCreateModel = {name: "", author_first_name: "", author_last_name: ""};
         await request(app)
             .post("/courses")
             .send(data)
@@ -35,7 +35,7 @@ describe("/courses", ()=>{
     })
     let createdCourse: CourseViewModel;
     it("should create a course with correct input data", async ()=>{
-        const data: CourseCreateModel = {name: "QA"};
+        const data: CourseCreateModel = {name: "QA", author_first_name: "Anatolii", author_last_name: "Bas"};
         const createResponse = await request(app)
             .post("/courses")
             .send(data)
@@ -52,7 +52,7 @@ describe("/courses", ()=>{
     })
     let createdCourse2: CourseViewModel;
     it("should create a course2 with correct input data", async ()=>{
-        const data: CourseCreateModel = {name: "Design"};
+        const data: CourseCreateModel = {name: "Design", author_first_name: "Anatolii", author_last_name: "Bas"};
         const createResponse = await request(app)
             .post("/courses")
             .send(data)

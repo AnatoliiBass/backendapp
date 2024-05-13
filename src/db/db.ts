@@ -11,8 +11,6 @@ const client = new MongoClient(url, {
       deprecationErrors: true,
     }
   });
-  console.log("URL: ", url);
-  console.log("Client: ", client);
 export const runDB = async () => {
     try {
         await client.connect().catch((error) => {console.log("Error inside connect: ", error)});

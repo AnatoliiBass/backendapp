@@ -64,5 +64,32 @@ exports.authorsRepositoryQueries = {
         const course = yield db_1.courses.find({ author_id: getAuthor.id }).toArray();
         return (0, getViewModelAuthor_1.getViewModelAuthor)(course, getAuthor);
     }),
+    getAuthorByFullName: (first_name, last_name) => __awaiter(void 0, void 0, void 0, function* () {
+        var _e, e_2, _f, _g;
+        const getAuthors = yield db_1.authors.find({ first_name, last_name }).toArray();
+        console.log("getAuthors: ", getAuthors);
+        const authorsWithCourses = [];
+        if (getAuthors.length > 0) {
+            try {
+                for (var _h = true, getAuthors_2 = __asyncValues(getAuthors), getAuthors_2_1; getAuthors_2_1 = yield getAuthors_2.next(), _e = getAuthors_2_1.done, !_e; _h = true) {
+                    _g = getAuthors_2_1.value;
+                    _h = false;
+                    const author = _g;
+                    const course = yield db_1.courses.find({ author_id: author.id }).toArray();
+                    if (author) {
+                        authorsWithCourses.push((0, getViewModelAuthor_1.getViewModelAuthor)(course, author));
+                    }
+                }
+            }
+            catch (e_2_1) { e_2 = { error: e_2_1 }; }
+            finally {
+                try {
+                    if (!_h && !_e && (_f = getAuthors_2.return)) yield _f.call(getAuthors_2);
+                }
+                finally { if (e_2) throw e_2.error; }
+            }
+        }
+        return authorsWithCourses;
+    }),
 };
 //# sourceMappingURL=authorsFromDBQueries.js.map

@@ -64,7 +64,7 @@ coursesRouter.post(
     _req: RequestWithBody<CourseCreateModel>,
     res: Response<CourseViewModel | null>
   ) => {
-    const newCourse = await coursesServises.createCourse(_req.body.name);
+    const newCourse = await coursesServises.createCourse(_req.body.name, _req.body.author_first_name, _req.body.author_last_name);
     return res.status(HTTP_STATUSES.CREATED).json(newCourse);
   }
 );

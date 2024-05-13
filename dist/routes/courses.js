@@ -38,7 +38,7 @@ exports.coursesRouter.delete("/:id(\\d+)", (_req, res) => __awaiter(void 0, void
     return res.status(httpstatuses_1.HTTP_STATUSES.NO_CONTENT).send("Course deleted");
 }));
 exports.coursesRouter.post("/", helpersValidator_1.nameValidator, validation_1.coursesValidation, (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const newCourse = yield courses_1.coursesServises.createCourse(_req.body.name);
+    const newCourse = yield courses_1.coursesServises.createCourse(_req.body.name, _req.body.author_first_name, _req.body.author_last_name);
     return res.status(httpstatuses_1.HTTP_STATUSES.CREATED).json(newCourse);
 }));
 exports.coursesRouter.put("/:id(\\d+)", helpersValidator_1.nameValidator, validation_1.coursesValidation, (_req, res) => __awaiter(void 0, void 0, void 0, function* () {

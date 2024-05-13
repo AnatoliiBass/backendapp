@@ -1,17 +1,27 @@
 import { Course } from "../types";
 import type { CourseViewModel } from "../models/CourseViewModel";
 import {coursesRepositoryCommand} from "../repositories/coursesFromDBCommand"
+import { authorsRepositoryQueries } from "../repositories/authorsFromDBQueries";
+import { authorsRepositoryCommand } from "../repositories/authorsFromDBCommand";
 
 export const coursesServises = {
     deleteCourse: async (id: number):Promise<boolean> => {
         return await coursesRepositoryCommand.deleteCourse(id)
     },
-    createCourse: async (name: string):Promise<CourseViewModel> => {
+    createCourse: async (name: string, author_first_name: string, author_last_name: string):Promise<CourseViewModel> => {
+        let author_id: number = 0;
+        const authors = await authorsRepositoryQueries.getAuthorByFullName(author_first_name, author_last_name);
+        if(authors.length > 0){
+            author_id = authors[0].id;
+        }else{
+            const newAuthor = await authorsRepositoryCommand.createAuthor({id: new Date().getTime(), first_name: author_first_name, last_name: author_last_name});
+            if(newAuthor) {author_id = newAuthor.id}
+        }
         const newCourse: Course = {
             id: new Date().getTime(),
             name,
             studentsAmount: 0,
-            author_id: 123
+            author_id
         };
         return await coursesRepositoryCommand.createCourse(newCourse)
     },

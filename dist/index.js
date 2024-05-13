@@ -15,12 +15,12 @@ const port = process.env.PORT || 3003;
 console.log("PORT: ", port);
 const startApp = () => __awaiter(void 0, void 0, void 0, function* () {
     console.log("Start app");
-    yield (0, db_1.runDB)().then(() => { console.log("DB run"); }).catch((error) => { console.log("Error: ", error); });
+    yield (0, db_1.runDB)().then(() => { console.log("DB run"); }).catch((error) => { console.log("Error run DB: ", error); });
     console.log("DB run");
     app_1.app.listen(port, () => {
         console.log(`Server is running on port ${port}`);
     });
 });
-startApp().then(() => { console.log("App started"); }).catch((error) => { console.log("Error: ", error); });
+startApp().then(() => { console.log("App started"); }).catch((error) => { console.log("Error start App: ", error); });
 exports.default = app_1.app;
 //# sourceMappingURL=index.js.map

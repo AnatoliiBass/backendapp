@@ -13,7 +13,7 @@ import type { CourseCreateModel } from "../models/CourseCreateModel";
 import type { CourseUpdateModel } from "../models/CourseUpdateModel";
 import { HTTP_STATUSES } from "../utils/httpstatuses";
 import { coursesServises } from "../servises/courses";
-import { nameValidator } from "../utils/helpersValidator";
+import { firstNameValidator, lastNameValidator, nameValidator } from "../utils/helpersValidator";
 import { coursesValidation } from "../middelwares/validation";
 import { coursesRepositoryQueries } from "../repositories/coursesFromDBQueries";
 
@@ -59,6 +59,8 @@ coursesRouter.delete(
 coursesRouter.post(
   "/",
   nameValidator,
+  firstNameValidator,
+  lastNameValidator,
   coursesValidation,
   async (
     _req: RequestWithBody<CourseCreateModel>,

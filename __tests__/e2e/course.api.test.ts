@@ -31,7 +31,9 @@ describe("/courses", ()=>{
             .send(data)
             .expect(HTTP_STATUSES.BAD_REQUEST, 
                 { errors: [{ type: "field", value: data.name, msg: "Name must be between 2 and 100 characters long and cannot be empty", 
-                path: "name", location: "body" }] })
+                path: "name", location: "body" },{ type: "field", value: data.author_first_name, msg: "Author first name must be between 2 and 100 characters long and cannot be empty", 
+                path: "author_first_name", location: "body" },{ type: "field", value: data.author_last_name, msg: "Author last name must be between 2 and 100 characters long and cannot be empty", 
+                path: "author_last_name", location: "body" }] })
     })
     let createdCourse: CourseViewModel;
     it("should create a course with correct input data", async ()=>{

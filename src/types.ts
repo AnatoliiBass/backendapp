@@ -15,12 +15,13 @@ export type Course = {
     author_id: number
 }
 
+export type CourseKeys = keyof Course;
+
 export type Author = {
     id: number,
     first_name: string,
     last_name: string
 }
 
-export type DbCourses = {
-    courses: Course[]
-}
+export type AuthorKeys = keyof Author;
+

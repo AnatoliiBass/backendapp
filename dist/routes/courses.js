@@ -18,7 +18,12 @@ const validation_1 = require("../middelwares/validation");
 const coursesFromDBQueries_1 = require("../repositories/coursesFromDBQueries");
 exports.coursesRouter = (0, express_1.Router)();
 exports.coursesRouter.get("/", (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const courses = yield coursesFromDBQueries_1.coursesRepositoryQueries.getAllCourses(_req.query.name);
+    const courses = yield coursesFromDBQueries_1.coursesRepositoryQueries.getAllCourses(_req.query.name, _req.query.page, _req.query.per_page, _req.query.sort_by, _req.query.sort_order);
+    if (!courses) {
+        res.statusCode = httpstatuses_1.HTTP_STATUSES.NOT_FOUND;
+        res.statusMessage = "Courses not found";
+        return res.json(null);
+    }
     return res.status(httpstatuses_1.HTTP_STATUSES.OK).json(courses);
 }));
 exports.coursesRouter.get("/:id(\\d+)", (_req, res) => __awaiter(void 0, void 0, void 0, function* () {

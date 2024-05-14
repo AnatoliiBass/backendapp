@@ -7,7 +7,7 @@ import type {
   RequestWithQuery,
 } from "../types";
 import type { CourseGetWithQueryModel } from "../models/CourseGetWithQueryModel";
-import type { CourseViewModel } from "../models/CourseViewModel";
+import type { CourseViewModel, CourseViewModelObject } from "../models/CourseViewModel";
 import type { CourseURIParamsModel } from "../models/CourseURIParamsModel";
 import type { CourseCreateModel } from "../models/CourseCreateModel";
 import type { CourseUpdateModel } from "../models/CourseUpdateModel";
@@ -22,9 +22,14 @@ coursesRouter.get(
   "/",
   async (
     _req: RequestWithQuery<CourseGetWithQueryModel>,
-    res: Response<CourseViewModel[]>
+    res: Response<CourseViewModelObject | null>
   ) => {
-    const courses = await coursesRepositoryQueries.getAllCourses(_req.query.name);
+    const courses = await coursesRepositoryQueries.getAllCourses(_req.query.name, _req.query.page, _req.query.per_page, _req.query.sort_by, _req.query.sort_order);
+    if (!courses) {
+      res.statusCode = HTTP_STATUSES.NOT_FOUND;
+      res.statusMessage = "Courses not found";
+      return res.json(null);
+    }
     return res.status(HTTP_STATUSES.OK).json(courses);
   }
 );

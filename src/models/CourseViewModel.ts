@@ -9,3 +9,10 @@ export type CourseViewModel = {
         last_name: string;
     }
 }
+
+export type CourseViewModelObject = {
+    courses: CourseViewModel[];
+    total: number;
+    page: number;
+    per_page: number;
+}

@@ -19,14 +19,30 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.coursesRepositoryQueries = void 0;
 const db_1 = require("../db/db");
 const getViewModelCourse_1 = require("../utils/getViewModelCourse");
+const constants_1 = require("../constants");
 exports.coursesRepositoryQueries = {
-    getAllCourses: (name) => __awaiter(void 0, void 0, void 0, function* () {
+    getAllCourses: (name, page, per_page, sort_by, sort_order) => __awaiter(void 0, void 0, void 0, function* () {
         var _a, e_1, _b, _c;
+        console.log("name: ", name, "page: ", page, "per_page: ", per_page);
+        console.log("sort_by: ", sort_by, "sort_order: ", sort_order);
         let filter = {};
+        let sort = {};
+        if (sort_by || (sort_order && sort_order.toLowerCase() === "desc")) {
+            if (constants_1.COURSE_KEYS.includes(sort_by)) {
+                sort = { [sort_by]: sort_order === "desc" ? -1 : 1 };
+            }
+            else {
+                sort = { _id: sort_order === "desc" ? -1 : 1 };
+            }
+        }
         if (name) {
             filter = { name: { $regex: name } };
         }
-        const getCourses = yield db_1.courses.find(filter).toArray();
+        const getCourses = yield db_1.courses.find(filter).sort(sort).toArray();
+        const total = yield db_1.courses.countDocuments(filter);
+        const correctPage = parseInt(page) && parseInt(page) > 0 ? parseInt(page) : constants_1.PAGE;
+        const correctPerPage = parseInt(per_page) && parseInt(per_page) > 0 ? parseInt(per_page) : constants_1.PER_PAGE;
+        console.log("Total: ", total);
         const coursesWithAuthor = [];
         console.log("getCourses: ", getCourses);
         if (getCourses.length > 0) {
@@ -49,7 +65,13 @@ exports.coursesRepositoryQueries = {
                 finally { if (e_1) throw e_1.error; }
             }
         }
-        return coursesWithAuthor;
+        console.log("coursesWithAuthor: ", coursesWithAuthor);
+        if (coursesWithAuthor.length === 0 || correctPage > Math.ceil(total / correctPerPage)) {
+            return null;
+        }
+        return { courses: coursesWithAuthor
+                .slice((correctPage - 1) * correctPerPage, ((correctPage - 1) * correctPerPage) + correctPerPage),
+            total: Math.ceil(total / correctPerPage), page: correctPage, per_page: correctPerPage };
     }),
     getCourseById: (id) => __awaiter(void 0, void 0, void 0, function* () {
         const getCourse = yield db_1.courses.findOne({ id });

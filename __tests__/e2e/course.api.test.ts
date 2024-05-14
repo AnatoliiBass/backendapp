@@ -12,7 +12,26 @@ describe("/courses", ()=>{
         .get("/courses")
         .expect(HTTP_STATUSES.OK);
 
-    expect(response.body).toBeInstanceOf(Array<CourseViewModel>);
+    expect(response.body).toEqual({courses: expect.any(Array<CourseViewModel>), total: expect.any(Number), page: expect.any(Number), per_page: expect.any(Number)});
+    })
+    it("should return 200 and a list of courses with query", async ()=>{
+        const response = await request(app)
+        .get("/courses?name=Design")
+        .expect(HTTP_STATUSES.OK);
+
+    expect(response.body).toEqual({courses: expect.any(Array<CourseViewModel>), total: expect.any(Number), page: expect.any(Number), per_page: expect.any(Number)});
+    })
+    it("should return 200 and a list of courses with query", async ()=>{
+        const response = await request(app)
+        .get("/courses?page=1&per_page=2")
+        .expect(HTTP_STATUSES.OK);
+
+    expect(response.body).toEqual({courses: expect.any(Array<CourseViewModel>), total: expect.any(Number), page: expect.any(Number), per_page: expect.any(Number)});
+    })
+    it("should return 404 and a list of courses with query which can't find", async ()=>{
+        const response = await request(app)
+        .get("/courses?name=Unknown&page=1&per_page=2")
+        .expect(HTTP_STATUSES.NOT_FOUND, null);
     })
     it("should return 404 for not existing course", async ()=>{
         const res = await request(app)
@@ -57,7 +76,7 @@ describe("/courses", ()=>{
         const response = await request(app)
             .get("/courses")
             .expect(HTTP_STATUSES.OK)
-        expect(response.body).toBeInstanceOf(Array<CourseViewModel>);
+        expect(response.body).toEqual({courses: expect.any(Array<CourseViewModel>), total: expect.any(Number), page: expect.any(Number), per_page: expect.any(Number)});
     })
     let createdCourse2: CourseViewModel;
     it("should create a course2 with correct input data", async ()=>{
@@ -74,7 +93,7 @@ describe("/courses", ()=>{
         const response = await request(app)
             .get("/courses")
             .expect(HTTP_STATUSES.OK)
-            expect(response.body).toBeInstanceOf(Array<CourseViewModel>);
+            expect(response.body).toEqual({courses: expect.any(Array<CourseViewModel>), total: expect.any(Number), page: expect.any(Number), per_page: expect.any(Number)});
     })
     it("should'nt update a course with incorrect input data", async ()=>{
         const data: CourseUpdateModel = {name: ""};

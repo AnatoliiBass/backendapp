@@ -6,6 +6,7 @@ exports.HTTP_STATUSES = {
     CREATED: 201,
     NO_CONTENT: 204,
     BAD_REQUEST: 400,
-    NOT_FOUND: 404
+    NOT_FOUND: 404,
+    DATA_EXISTS: 409,
 };
 //# sourceMappingURL=httpstatuses.js.map

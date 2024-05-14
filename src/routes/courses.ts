@@ -67,6 +67,11 @@ coursesRouter.post(
     res: Response<CourseViewModel | null>
   ) => {
     const newCourse = await coursesServises.createCourse(_req.body.name, _req.body.author_first_name, _req.body.author_last_name);
+    if (!newCourse) {
+      res.statusCode = HTTP_STATUSES.DATA_EXISTS;
+      res.statusMessage = "Course already exists";
+      return res.json(null);
+    }
     return res.status(HTTP_STATUSES.CREATED).json(newCourse);
   }
 );

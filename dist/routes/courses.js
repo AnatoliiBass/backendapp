@@ -39,6 +39,11 @@ exports.coursesRouter.delete("/:id(\\d+)", (_req, res) => __awaiter(void 0, void
 }));
 exports.coursesRouter.post("/", helpersValidator_1.nameValidator, helpersValidator_1.firstNameValidator, helpersValidator_1.lastNameValidator, validation_1.coursesValidation, (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const newCourse = yield courses_1.coursesServises.createCourse(_req.body.name, _req.body.author_first_name, _req.body.author_last_name);
+    if (!newCourse) {
+        res.statusCode = httpstatuses_1.HTTP_STATUSES.DATA_EXISTS;
+        res.statusMessage = "Course already exists";
+        return res.json(null);
+    }
     return res.status(httpstatuses_1.HTTP_STATUSES.CREATED).json(newCourse);
 }));
 exports.coursesRouter.put("/:id(\\d+)", helpersValidator_1.nameValidator, validation_1.coursesValidation, (_req, res) => __awaiter(void 0, void 0, void 0, function* () {

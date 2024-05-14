@@ -35,9 +35,16 @@ describe("/courses", ()=>{
                 path: "author_first_name", location: "body" },{ type: "field", value: data.author_last_name, msg: "Author last name must be between 2 and 100 characters long and cannot be empty", 
                 path: "author_last_name", location: "body" }] })
     })
+    it("should'nt create a course with data which is exists", async ()=>{
+        const data: CourseCreateModel = {name: "Design", author_first_name: "Anatolii", author_last_name: "Bas"};
+        await request(app)
+            .post("/courses")
+            .send(data)
+            .expect(HTTP_STATUSES.DATA_EXISTS, null)
+    })
     let createdCourse: CourseViewModel;
     it("should create a course with correct input data", async ()=>{
-        const data: CourseCreateModel = {name: "QA", author_first_name: "Anatolii", author_last_name: "Bas"};
+        const data: CourseCreateModel = {name: "Test1", author_first_name: "Test1", author_last_name: "Test1"};
         const createResponse = await request(app)
             .post("/courses")
             .send(data)
@@ -54,7 +61,7 @@ describe("/courses", ()=>{
     })
     let createdCourse2: CourseViewModel;
     it("should create a course2 with correct input data", async ()=>{
-        const data: CourseCreateModel = {name: "Design", author_first_name: "Anatolii", author_last_name: "Bas"};
+        const data: CourseCreateModel = {name: "Test2", author_first_name: "Test2", author_last_name: "Test2"};
         const createResponse = await request(app)
             .post("/courses")
             .send(data)

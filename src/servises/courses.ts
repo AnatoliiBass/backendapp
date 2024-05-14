@@ -8,11 +8,13 @@ export const coursesServises = {
     deleteCourse: async (id: number):Promise<boolean> => {
         return await coursesRepositoryCommand.deleteCourse(id)
     },
-    createCourse: async (name: string, author_first_name: string, author_last_name: string):Promise<CourseViewModel> => {
+    createCourse: async (name: string, author_first_name: string, author_last_name: string):Promise<CourseViewModel | null> => {
         let author_id: number = 0;
         const authors = await authorsRepositoryQueries.getAuthorByFullName(author_first_name, author_last_name);
         if(authors.length > 0){
-            author_id = authors[0].id;
+            if(authors[0].courses.some(course => course.name.toLowerCase() === name.toLowerCase())){
+                return null
+            }else{author_id = authors[0].id}
         }else{
             const newAuthor = await authorsRepositoryCommand.createAuthor({id: new Date().getTime(), first_name: author_first_name, last_name: author_last_name});
             if(newAuthor) {author_id = newAuthor.id}

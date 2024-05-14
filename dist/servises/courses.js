@@ -21,7 +21,12 @@ exports.coursesServises = {
         let author_id = 0;
         const authors = yield authorsFromDBQueries_1.authorsRepositoryQueries.getAuthorByFullName(author_first_name, author_last_name);
         if (authors.length > 0) {
-            author_id = authors[0].id;
+            if (authors[0].courses.some(course => course.name.toLowerCase() === name.toLowerCase())) {
+                return null;
+            }
+            else {
+                author_id = authors[0].id;
+            }
         }
         else {
             const newAuthor = yield authorsFromDBCommand_1.authorsRepositoryCommand.createAuthor({ id: new Date().getTime(), first_name: author_first_name, last_name: author_last_name });

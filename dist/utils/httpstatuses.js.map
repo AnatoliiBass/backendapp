@@ -1,1 +1,1 @@
-{"version":3,"file":"httpstatuses.js","sourceRoot":"","sources":["../../src/utils/httpstatuses.ts"],"names":[],"mappings":";;;AAAa,QAAA,aAAa,GAAG;IACzB,EAAE,EAAE,GAAG;IACP,OAAO,EAAE,GAAG;IACZ,UAAU,EAAE,GAAG;IACf,WAAW,EAAE,GAAG;IAChB,SAAS,EAAE,GAAG;CACjB,CAAA"}
+{"version":3,"file":"httpstatuses.js","sourceRoot":"","sources":["../../src/utils/httpstatuses.ts"],"names":[],"mappings":";;;AAAa,QAAA,aAAa,GAAG;IACzB,EAAE,EAAE,GAAG;IACP,OAAO,EAAE,GAAG;IACZ,UAAU,EAAE,GAAG;IACf,WAAW,EAAE,GAAG;IAChB,SAAS,EAAE,GAAG;IACd,WAAW,EAAE,GAAG;CACnB,CAAA"}

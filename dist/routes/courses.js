@@ -42,7 +42,7 @@ exports.coursesRouter.delete("/:id(\\d+)", (_req, res) => __awaiter(void 0, void
     }
     return res.status(httpstatuses_1.HTTP_STATUSES.NO_CONTENT).send("Course deleted");
 }));
-exports.coursesRouter.post("/", helpersValidator_1.nameValidator, helpersValidator_1.firstNameValidator, helpersValidator_1.lastNameValidator, validation_1.coursesValidation, (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.coursesRouter.post("/", ...helpersValidator_1.courseValidation, validation_1.standartValidation, (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const newCourse = yield courses_1.coursesServises.createCourse(_req.body.name, _req.body.author_first_name, _req.body.author_last_name);
     if (!newCourse) {
         res.statusCode = httpstatuses_1.HTTP_STATUSES.DATA_EXISTS;
@@ -51,7 +51,7 @@ exports.coursesRouter.post("/", helpersValidator_1.nameValidator, helpersValidat
     }
     return res.status(httpstatuses_1.HTTP_STATUSES.CREATED).json(newCourse);
 }));
-exports.coursesRouter.put("/:id(\\d+)", helpersValidator_1.nameValidator, validation_1.coursesValidation, (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.coursesRouter.put("/:id(\\d+)", helpersValidator_1.nameValidator, validation_1.standartValidation, (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const course = yield courses_1.coursesServises.updateCourse(+_req.params.id, _req.body.name);
     if (!course) {
         res.statusCode = httpstatuses_1.HTTP_STATUSES.NOT_FOUND;

@@ -22,3 +22,4 @@ export const runDB = async () => {
 export const database = client.db("Learning");
 export const courses = database.collection<Course>("Courses");
 export const authors = database.collection<Author>("Authors");
+export const students = database.collection("Students");

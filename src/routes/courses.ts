@@ -13,8 +13,8 @@ import type { CourseCreateModel } from "../models/CourseCreateModel";
 import type { CourseUpdateModel } from "../models/CourseUpdateModel";
 import { HTTP_STATUSES } from "../utils/httpstatuses";
 import { coursesServises } from "../servises/courses";
-import { firstNameValidator, lastNameValidator, nameValidator } from "../utils/helpersValidator";
-import { coursesValidation } from "../middelwares/validation";
+import { courseValidation, firstNameValidator, lastNameValidator, nameValidator } from "../utils/helpersValidator";
+import { standartValidation } from "../middelwares/validation";
 import { coursesRepositoryQueries } from "../repositories/coursesFromDBQueries";
 
 export const coursesRouter = Router();
@@ -63,10 +63,8 @@ coursesRouter.delete(
 
 coursesRouter.post(
   "/",
-  nameValidator,
-  firstNameValidator,
-  lastNameValidator,
-  coursesValidation,
+ ...courseValidation,
+  standartValidation,
   async (
     _req: RequestWithBody<CourseCreateModel>,
     res: Response<CourseViewModel | null>
@@ -84,7 +82,7 @@ coursesRouter.post(
 coursesRouter.put(
   "/:id(\\d+)",
   nameValidator,
-  coursesValidation,
+  standartValidation,
   async (
     _req: RequestWithParamsAndBody<CourseURIParamsModel, CourseUpdateModel>,
     res: Response<CourseViewModel | null>

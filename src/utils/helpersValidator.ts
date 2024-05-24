@@ -8,3 +8,25 @@ export const firstNameValidator = body("author_first_name").trim().isLength({ mi
 
 export const lastNameValidator = body("author_last_name").trim().isLength({ min: 2, max: 100 })
 .withMessage("Author last name must be between 2 and 100 characters long and cannot be empty");
+
+export const courseValidation = [
+    nameValidator,
+    firstNameValidator,
+    lastNameValidator
+];
+
+export const studentFirstNameValidator = body("first_name").trim().isLength({ min: 2, max: 100 });
+export const studentLastNameValidator = body("last_name").trim().isLength({ min: 2, max: 100 });
+export const studentEmailValidator = body("email").trim().isEmail();
+export const studentPhoneValidator = body("phone").trim().isMobilePhone('nb-NO', { strictMode: false });
+export const studentBirthdateValidator = body("birthdate").trim().isISO8601();
+export const studentPasswordValidator = body("password").trim().isLength({ min: 8, max: 100 });
+
+export const studentValidation = [
+    studentFirstNameValidator.withMessage("First name must be between 2 and 100 characters long and cannot be empty"),
+    studentLastNameValidator.withMessage("Last name must be between 2 and 100 characters long and cannot be empty"),
+    studentEmailValidator.withMessage("Email must be a valid email"),
+    studentPhoneValidator.withMessage("Phone must be a valid phone number"),
+    studentBirthdateValidator.withMessage("Birthdate must be a valid date"),
+    studentPasswordValidator.withMessage("Password must be between 8 and 100 characters long and cannot be empty")
+];

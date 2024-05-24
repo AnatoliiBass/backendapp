@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.authors = exports.courses = exports.database = exports.runDB = void 0;
+exports.students = exports.authors = exports.courses = exports.database = exports.runDB = void 0;
 const mongodb_1 = require("mongodb");
 const url = process.env.MongoURI || "mongodb+srv://anatolii:oy9CmAVu1orhHfkw@cluster0.rmiojst.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 const client = new mongodb_1.MongoClient(url, {
@@ -34,4 +34,5 @@ exports.runDB = runDB;
 exports.database = client.db("Learning");
 exports.courses = exports.database.collection("Courses");
 exports.authors = exports.database.collection("Authors");
+exports.students = exports.database.collection("Students");
 //# sourceMappingURL=db.js.map

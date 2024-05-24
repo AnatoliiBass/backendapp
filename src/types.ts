@@ -25,3 +25,14 @@ export type Author = {
 
 export type AuthorKeys = keyof Author;
 
+export type Student = {
+    id: number,
+    first_name: string,
+    last_name: string,
+    email: string,
+    phone: string,
+    birthdate: string,
+    password: string,
+    created_at: string
+}
+

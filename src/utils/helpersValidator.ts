@@ -24,7 +24,7 @@ export const userFirstNameValidator = body("first_name").trim().isLength({ min: 
 export const userLastNameValidator = body("last_name").trim().isLength({ min: 2, max: 100 });
 export const userRoleValidator = body("role").trim().isLowercase().isIn(["student", "author", "admin"]);
 export const userEmailValidator = body("email").trim().isEmail();
-export const userPhoneValidator = body("phone").trim().custom(isValidNorwegianPhone);
+export const userPhoneValidator = body("phone").trim().isLength({ min: 8, max: 100 });
 export const userBirthdateValidator = body("birthdate").trim().isISO8601();
 export const userPasswordValidator = body("password").trim().isLength({ min: 8, max: 100 });
 

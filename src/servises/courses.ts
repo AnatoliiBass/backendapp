@@ -22,7 +22,7 @@ export const coursesServises = {
         const newCourse: Course = {
             id: new Date().getTime(),
             name,
-            studentsAmount: 0,
+            usersAmount: 0,
             author_id
         };
         return await coursesRepositoryCommand.createCourse(newCourse)

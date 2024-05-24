@@ -11,7 +11,7 @@ export type RequestWithParamsAndBodyAndQuery<Params, Body, Query> = Request<Para
 export type Course = {
     id: number,
     name: string,
-    studentsAmount: number,
+    usersAmount: number,
     author_id: number
 }
 
@@ -25,8 +25,9 @@ export type Author = {
 
 export type AuthorKeys = keyof Author;
 
-export type Student = {
+export type User = {
     id: number,
+    role: string,
     first_name: string,
     last_name: string,
     email: string,

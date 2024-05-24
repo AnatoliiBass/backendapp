@@ -1,7 +1,8 @@
 import { MongoClient, ServerApiVersion } from "mongodb";
-import type { Author, Course } from "../types";
+import type { Author, Course, User } from "../types";
+import { setting } from "../setting";
 
-const url = process.env.MongoURI || "mongodb+srv://anatolii:oy9CmAVu1orhHfkw@cluster0.rmiojst.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const url = setting.MONGO_URI;
 const client = new MongoClient(url, {
   family: 4,
   connectTimeoutMS: 100000,
@@ -22,4 +23,4 @@ export const runDB = async () => {
 export const database = client.db("Learning");
 export const courses = database.collection<Course>("Courses");
 export const authors = database.collection<Author>("Authors");
-export const students = database.collection("Students");
+export const users = database.collection<User>("Users");

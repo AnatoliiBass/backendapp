@@ -9,9 +9,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.students = exports.authors = exports.courses = exports.database = exports.runDB = void 0;
+exports.users = exports.authors = exports.courses = exports.database = exports.runDB = void 0;
 const mongodb_1 = require("mongodb");
-const url = process.env.MongoURI || "mongodb+srv://anatolii:oy9CmAVu1orhHfkw@cluster0.rmiojst.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const setting_1 = require("../setting");
+const url = setting_1.setting.MONGO_URI;
 const client = new mongodb_1.MongoClient(url, {
     family: 4,
     connectTimeoutMS: 100000,
@@ -34,5 +35,5 @@ exports.runDB = runDB;
 exports.database = client.db("Learning");
 exports.courses = exports.database.collection("Courses");
 exports.authors = exports.database.collection("Authors");
-exports.students = exports.database.collection("Students");
+exports.users = exports.database.collection("Users");
 //# sourceMappingURL=db.js.map

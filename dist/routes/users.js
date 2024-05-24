@@ -9,20 +9,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.studentsRouter = void 0;
+exports.usersRouter = void 0;
 const express_1 = require("express");
 const httpstatuses_1 = require("../utils/httpstatuses");
 const helpersValidator_1 = require("../utils/helpersValidator");
 const validation_1 = require("../middelwares/validation");
-const students_1 = require("../servises/students");
-exports.studentsRouter = (0, express_1.Router)();
-exports.studentsRouter.post("/", ...helpersValidator_1.studentValidation, validation_1.standartValidation, (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const newStudent = yield students_1.studentsServises.createStudent(_req.body.first_name, _req.body.last_name, _req.body.email, _req.body.phone, _req.body.birthdate, _req.body.password);
-    if (!newStudent) {
+const users_1 = require("../servises/users");
+exports.usersRouter = (0, express_1.Router)();
+exports.usersRouter.post("/users", ...helpersValidator_1.userValidation, validation_1.standartValidation, (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const newUser = yield users_1.usersServises.createUser(_req.body.first_name, _req.body.last_name, _req.body.role, _req.body.email, _req.body.phone, _req.body.birthdate, _req.body.password);
+    if (!newUser) {
         res.statusCode = httpstatuses_1.HTTP_STATUSES.DATA_EXISTS;
-        res.statusMessage = "Student already exists";
+        res.statusMessage = "User already exists";
         return res.json(null);
     }
-    return res.status(httpstatuses_1.HTTP_STATUSES.CREATED).json(newStudent);
+    return res.status(httpstatuses_1.HTTP_STATUSES.CREATED).json(newUser);
 }));
-//# sourceMappingURL=students.js.map
+//# sourceMappingURL=users.js.map

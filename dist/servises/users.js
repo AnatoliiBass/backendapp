@@ -12,16 +12,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.studentsServises = void 0;
+exports.usersServises = void 0;
+const usersFromDBCommand_1 = require("../repositories/usersFromDBCommand");
 const bcrypt_1 = __importDefault(require("bcrypt"));
-const studentsFromDBCommand_1 = require("../repositories/studentsFromDBCommand");
-exports.studentsServises = {
-    createStudent(first_name, last_name, email, phone, birthdate, password) {
+exports.usersServises = {
+    createUser(first_name, last_name, role, email, phone, birthdate, password) {
         return __awaiter(this, void 0, void 0, function* () {
             const passwordSalt = yield bcrypt_1.default.genSalt(10);
             const passwordHash = yield this._generateHash(password, passwordSalt);
-            const newStudent = {
+            const newUser = {
                 id: new Date().getTime(),
+                role,
                 first_name,
                 last_name,
                 email,
@@ -30,7 +31,7 @@ exports.studentsServises = {
                 password: passwordHash,
                 created_at: new Date().toISOString()
             };
-            return yield studentsFromDBCommand_1.studentsRepositoryCommand.createStudent(newStudent);
+            return yield usersFromDBCommand_1.usersRepositoryCommand.createUser(newUser);
         });
     },
     _generateHash(password, salt) {
@@ -40,12 +41,18 @@ exports.studentsServises = {
     },
     checkCredentials(email, password) {
         return __awaiter(this, void 0, void 0, function* () {
-            const student = yield studentsFromDBCommand_1.studentsRepositoryCommand.getStudentByEmail(email);
-            if (!student) {
-                return false;
+            const user = yield usersFromDBCommand_1.usersRepositoryCommand.getUserByEmail(email);
+            if (!user) {
+                return null;
             }
-            return yield bcrypt_1.default.compare(password, student.password);
+            const result = yield bcrypt_1.default.compare(password, user.password);
+            if (result) {
+                return user;
+            }
+            else {
+                return null;
+            }
         });
     }
 };
-//# sourceMappingURL=students.js.map
+//# sourceMappingURL=users.js.map

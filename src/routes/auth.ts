@@ -5,31 +5,33 @@ import type {
   RequestWithParams,
   RequestWithParamsAndBody,
   RequestWithQuery,
-  Student,
+  User,
 } from "../types";
 import { HTTP_STATUSES } from "../utils/httpstatuses";
-import { studentEmailValidator, studentPasswordValidator, studentValidation } from "../utils/helpersValidator";
+import { userEmailValidator, userPasswordValidator, userValidation } from "../utils/helpersValidator";
 import { standartValidation } from "../middelwares/validation";
-import { studentsServises } from "../servises/students";
-import { StudentLoginModel } from "../models/StudentLoginModel";
+import { UserLoginModel } from "../models/UserLoginModel";
+import { usersServises } from "../servises/users";
+import { jwtService } from "../application/jwtService";
 
 export const authRouter = Router();
 
 authRouter.post(
   "/login",
-  studentEmailValidator,
-    studentPasswordValidator,
+  userEmailValidator,
+    userPasswordValidator,
   standartValidation,
   async (
-    _req: RequestWithBody<StudentLoginModel>,
-    res: Response<boolean>
+    _req: RequestWithBody<UserLoginModel>,
+    res: Response<string | null>
   ) => {
-    const checkResult = await studentsServises.checkCredentials(_req.body.email, _req.body.password);
-    if (!checkResult) {
+    const user = await usersServises.checkCredentials(_req.body.email, _req.body.password);
+    if (!user) {
       res.statusCode = HTTP_STATUSES.UNAUTHORIZED;
       res.statusMessage = "Invalid credentials";
-      return res.json(false);
+      return res.json(null);
     }
-    return res.status(HTTP_STATUSES.CREATED).json(true);
+    const token = await jwtService.generateToken(user);
+    return res.status(HTTP_STATUSES.CREATED).json("User logged in");
   }
 );

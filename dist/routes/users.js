@@ -16,7 +16,7 @@ const helpersValidator_1 = require("../utils/helpersValidator");
 const validation_1 = require("../middelwares/validation");
 const users_1 = require("../servises/users");
 exports.usersRouter = (0, express_1.Router)();
-exports.usersRouter.post("/users", ...helpersValidator_1.userValidation, validation_1.standartValidation, (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.usersRouter.post("/", ...helpersValidator_1.userValidation, validation_1.standartValidation, (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const newUser = yield users_1.usersServises.createUser(_req.body.first_name, _req.body.last_name, _req.body.role, _req.body.email, _req.body.phone, _req.body.birthdate, _req.body.password);
     if (!newUser) {
         res.statusCode = httpstatuses_1.HTTP_STATUSES.DATA_EXISTS;

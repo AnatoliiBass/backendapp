@@ -2,6 +2,8 @@ import express, { type Request, type Response } from 'express'
 import { coursesRouter } from './routes/courses';
 import { HTTP_STATUSES } from './utils/httpstatuses';
 import { authorsRouter } from './routes/authors';
+import { usersRouter } from './routes/users';
+import { authRouter } from './routes/auth';
 
 export const app = express();
 
@@ -12,3 +14,5 @@ app.get('/', (_req: Request, res: Response) => res.status(HTTP_STATUSES.OK).send
 
 app.use('/courses', coursesRouter);
 app.use('/authors', authorsRouter);
+app.use('/users', usersRouter);
+app.use('/auth', authRouter);

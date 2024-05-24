@@ -16,7 +16,7 @@ import { usersServises } from "../servises/users";
 export const usersRouter = Router();
 
 usersRouter.post(
-  "/users",
+  "/",
   ...userValidation,
   standartValidation,
   async (

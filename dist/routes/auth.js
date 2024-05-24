@@ -25,6 +25,6 @@ exports.authRouter.post("/login", helpersValidator_1.userEmailValidator, helpers
         return res.json(null);
     }
     const token = yield jwtService_1.jwtService.generateToken(user);
-    return res.status(httpstatuses_1.HTTP_STATUSES.CREATED).json("User logged in");
+    return res.status(httpstatuses_1.HTTP_STATUSES.CREATED).json(token);
 }));
 //# sourceMappingURL=auth.js.map

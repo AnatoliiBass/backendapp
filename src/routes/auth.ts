@@ -32,6 +32,6 @@ authRouter.post(
       return res.json(null);
     }
     const token = await jwtService.generateToken(user);
-    return res.status(HTTP_STATUSES.CREATED).json("User logged in");
+    return res.status(HTTP_STATUSES.CREATED).json(token);
   }
 );

@@ -17,6 +17,7 @@ export const courseValidation = [
 
 export const userFirstNameValidator = body("first_name").trim().isLength({ min: 2, max: 100 });
 export const userLastNameValidator = body("last_name").trim().isLength({ min: 2, max: 100 });
+export const userRoleValidator = body("role").trim().isLowercase().isIn(["student", "author", "admin"]);
 export const userEmailValidator = body("email").trim().isEmail();
 export const userPhoneValidator = body("phone").trim().isMobilePhone('nb-NO', { strictMode: false });
 export const userBirthdateValidator = body("birthdate").trim().isISO8601();

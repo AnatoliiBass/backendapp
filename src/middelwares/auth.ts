@@ -13,8 +13,9 @@ export const authValidation = async (req: Request, res: Response, next: NextFunc
 
     const user = await jwtService.verifyToken(token);
     if (user) {
-        req.body.user_id = parseInt(user);
+        req.body.user_id = user;
         next();
+    }else{
+        res.status(401).json({ message: "Unauthorized" });
     }
-    res.status(401).json({ message: "Unauthorized" });
 };

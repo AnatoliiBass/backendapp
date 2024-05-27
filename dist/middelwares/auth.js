@@ -21,10 +21,12 @@ const authValidation = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
     }
     const user = yield jwtService_1.jwtService.verifyToken(token);
     if (user) {
-        req.body.user_id = parseInt(user);
+        req.body.user_id = user;
         next();
     }
-    res.status(401).json({ message: "Unauthorized" });
+    else {
+        res.status(401).json({ message: "Unauthorized" });
+    }
 });
 exports.authValidation = authValidation;
 //# sourceMappingURL=auth.js.map

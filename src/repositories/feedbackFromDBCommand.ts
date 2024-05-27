@@ -14,7 +14,8 @@ export const feedbackRepositoryCommand = {
             text: commentSaved.text,
             user_id: commentSaved.user_id,
             user_full_name: commentSaved.user_full_name,
-            course_id: commentSaved.course_id
+            course_id: commentSaved.course_id,
+            created_at: commentSaved.created_at
         };
     },
 }

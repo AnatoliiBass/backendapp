@@ -22,7 +22,8 @@ export const feedbackServises = {
             text,
             user_id,
             user_full_name: `${user.first_name} ${user.last_name}`,
-            course_id
+            course_id,
+            created_at: new Date().toISOString()
         };
         const createdComment = await feedbackRepositoryCommand.createComment(newComment);
         const course: CourseViewModel | null = await coursesRepositoryQueries.getCourseById(course_id);

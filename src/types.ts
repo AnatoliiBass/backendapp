@@ -43,6 +43,7 @@ export type Comment = {
     text: string,
     user_id: number,
     user_full_name: string,
-    course_id: number
+    course_id: number,
+    created_at: string
 };
 

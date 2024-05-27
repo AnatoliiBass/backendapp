@@ -20,6 +20,10 @@ exports.feedbackServises = {
     }),
     sendFeedback: (text, user_id, course_id) => __awaiter(void 0, void 0, void 0, function* () {
         const user = yield authorsFromDBQueries_1.authorsRepositoryQueries.getAuthorById(user_id);
+        console.log("User from services feedback", user);
+        if (!user) {
+            return null;
+        }
         const newComment = {
             id: new Date().getTime(),
             text,

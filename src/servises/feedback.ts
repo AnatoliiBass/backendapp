@@ -12,6 +12,10 @@ export const feedbackServises = {
     },
     sendFeedback: async (text: string, user_id: number, course_id: number):Promise<Comment | null> => {
         const user = await authorsRepositoryQueries.getAuthorById(user_id);
+        console.log("User from services feedback", user)
+        if(!user){
+            return null
+        }
         const newComment: Comment = {
             id: new Date().getTime(),
             text,

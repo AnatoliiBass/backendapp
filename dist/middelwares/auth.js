@@ -20,6 +20,7 @@ const authValidation = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
         return res.status(401).json({ message: "Unauthorized" });
     }
     const user = yield jwtService_1.jwtService.verifyToken(token);
+    console.log("User from auth middlaware: ", user);
     if (user) {
         req.body.user_id = user;
         next();

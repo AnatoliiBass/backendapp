@@ -12,6 +12,7 @@ export const authValidation = async (req: Request, res: Response, next: NextFunc
     }
 
     const user = await jwtService.verifyToken(token);
+    console.log("User from auth middlaware: ", user);
     if (user) {
         req.body.user_id = user;
         next();

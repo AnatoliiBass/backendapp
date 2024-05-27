@@ -28,6 +28,7 @@ feedbackRouter.post(
     res: Response<any | null>
   ) => {
     const result = await feedbackServises.sendFeedback(_req.body.comment, _req.body.user_id, _req.body.course_id);
+    console.log("Result from feedback router: ", result);
     return res.status(HTTP_STATUSES.CREATED).json(result);
   }
 );

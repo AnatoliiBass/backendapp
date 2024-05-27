@@ -26,7 +26,7 @@ exports.jwtService = {
             if (typeof decoded === 'string') {
                 return null;
             }
-            return decoded.id.toString();
+            return parseInt(decoded.id);
         }
         catch (err) {
             return null;

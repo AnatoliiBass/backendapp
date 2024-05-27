@@ -6,13 +6,13 @@ export const jwtService = {
         const token = jwt.sign({ id: user.id, role: user.role}, setting.JWT_SECRET, { expiresIn: "1h" });
         return token;
     },
-    verifyToken: async (token: string): Promise<string | null> => {
+    verifyToken: async (token: string): Promise<number | null> => {
         try {
             const decoded: string | jwt.JwtPayload = jwt.verify(token, setting.JWT_SECRET);
             if (typeof decoded === 'string') {
                 return null;
             }
-            return decoded.id.toString();
+            return parseInt(decoded.id);
         } catch(err) {
             return null;
         }

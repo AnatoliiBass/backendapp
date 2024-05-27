@@ -24,8 +24,7 @@ const authValidation = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
         req.body.user_id = parseInt(user);
         next();
     }
-    res.sendStatus(401);
-    next();
+    res.status(401).json({ message: "Unauthorized" });
 });
 exports.authValidation = authValidation;
 //# sourceMappingURL=auth.js.map

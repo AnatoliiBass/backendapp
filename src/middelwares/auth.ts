@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from "express";
-import { validationResult } from "express-validator";
 import { jwtService } from "../application/jwtService";
 
 export const authValidation = async (req: Request, res: Response, next: NextFunction) => {
@@ -17,7 +16,5 @@ export const authValidation = async (req: Request, res: Response, next: NextFunc
         req.body.user_id = parseInt(user);
         next();
     }
-
-    res.sendStatus(401);
-    next();
+    res.status(401).json({ message: "Unauthorized" });
 };

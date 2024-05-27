@@ -5,6 +5,7 @@ import { authorsRouter } from './routes/authors';
 import { usersRouter } from './routes/users';
 import { authRouter } from './routes/auth';
 import { feedbackRouter } from './routes/feedback';
+import { emailRouter } from './routes/email';
 
 export const app = express();
 
@@ -18,3 +19,4 @@ app.use('/authors', authorsRouter);
 app.use('/users', usersRouter);
 app.use('/auth', authRouter);
 app.use('/feedback', feedbackRouter);
+app.use('/email', emailRouter);

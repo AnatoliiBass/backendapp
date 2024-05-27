@@ -1,8 +1,6 @@
-import type { Comment, Course } from "../types";
+import type { Comment } from "../types";
 import type { CourseViewModel } from "../models/CourseViewModel";
 import {coursesRepositoryCommand} from "../repositories/coursesFromDBCommand"
-import { authorsRepositoryQueries } from "../repositories/authorsFromDBQueries";
-import { authorsRepositoryCommand } from "../repositories/authorsFromDBCommand";
 import { feedbackRepositoryCommand } from "../repositories/feedbackFromDBCommand";
 import { coursesRepositoryQueries } from "../repositories/coursesFromDBQueries";
 import { usersRepositoryCommand } from "../repositories/usersFromDBCommand";
@@ -13,7 +11,6 @@ export const feedbackServises = {
     },
     sendFeedback: async (text: string, user_id: number, course_id: number):Promise<Comment | null> => {
         const user = await usersRepositoryCommand.getUserById(user_id);
-        console.log("User from services feedback", user)
         if(!user){
             return null
         }

@@ -1,14 +1,8 @@
 import { Router } from "express";
 import type { Response } from "express";
-import type {
-  RequestWithBody,
-  RequestWithParams,
-  RequestWithParamsAndBody,
-  RequestWithQuery,
-  User,
-} from "../types";
+import type { RequestWithBody } from "../types";
 import { HTTP_STATUSES } from "../utils/httpstatuses";
-import { userEmailValidator, userPasswordValidator, userValidation } from "../utils/helpersValidator";
+import { userEmailValidator, userPasswordValidator } from "../utils/helpersValidator";
 import { standartValidation } from "../middelwares/validation";
 import { UserLoginModel } from "../models/UserLoginModel";
 import { usersServises } from "../servises/users";

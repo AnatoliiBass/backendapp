@@ -2,9 +2,6 @@ import { Router } from "express";
 import type { Response } from "express";
 import type {
   RequestWithBody,
-  RequestWithParams,
-  RequestWithParamsAndBody,
-  RequestWithQuery,
   User,
 } from "../types";
 import { HTTP_STATUSES } from "../utils/httpstatuses";

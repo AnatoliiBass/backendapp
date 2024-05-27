@@ -1,5 +1,5 @@
 import { courses, authors } from "../db/db";
-import { AuthorViewModel } from "../models/AuthorViewModel";
+import type { AuthorViewModel } from "../models/AuthorViewModel";
 import { getViewModelAuthor } from "../utils/getViewModelAuthor";
 
 export const authorsRepositoryQueries = {

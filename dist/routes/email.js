@@ -9,15 +9,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.feedbackRouter = void 0;
+exports.emailRouter = void 0;
 const express_1 = require("express");
-const httpstatuses_1 = require("../utils/httpstatuses");
-const helpersValidator_1 = require("../utils/helpersValidator");
-const auth_1 = require("../middelwares/auth");
-const feedback_1 = require("../servises/feedback");
-exports.feedbackRouter = (0, express_1.Router)();
-exports.feedbackRouter.post("/", helpersValidator_1.commentValidator, auth_1.authValidation, (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield feedback_1.feedbackServises.sendFeedback(_req.body.comment, _req.body.user_id, _req.body.course_id);
-    return res.status(httpstatuses_1.HTTP_STATUSES.CREATED).json(result);
+exports.emailRouter = (0, express_1.Router)();
+exports.emailRouter.post("/send", (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    res.send({
+        email: _req.body.email,
+        subject: _req.body.subject,
+        message: _req.body.message
+    });
 }));
-//# sourceMappingURL=feedback.js.map
+//# sourceMappingURL=email.js.map

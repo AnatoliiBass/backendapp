@@ -1,18 +1,8 @@
 import { Router } from "express";
 import type { Response } from "express";
-import type {
-  RequestWithBody,
-  RequestWithParams,
-  RequestWithParamsAndBody,
-  RequestWithQuery,
-  User,
-} from "../types";
+import type { RequestWithBody } from "../types";
 import { HTTP_STATUSES } from "../utils/httpstatuses";
-import { commentValidator, userEmailValidator, userPasswordValidator, userValidation } from "../utils/helpersValidator";
-import { standartValidation } from "../middelwares/validation";
-import { UserLoginModel } from "../models/UserLoginModel";
-import { usersServises } from "../servises/users";
-import { jwtService } from "../application/jwtService";
+import { commentValidator } from "../utils/helpersValidator";
 import type { FeedBackCreateModel } from "../models/FeedBackCreateModel";
 import { authValidation } from "../middelwares/auth";
 import { feedbackServises } from "../servises/feedback";
@@ -28,7 +18,6 @@ feedbackRouter.post(
     res: Response<any | null>
   ) => {
     const result = await feedbackServises.sendFeedback(_req.body.comment, _req.body.user_id, _req.body.course_id);
-    console.log("Result from feedback router: ", result);
     return res.status(HTTP_STATUSES.CREATED).json(result);
   }
 );

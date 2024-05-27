@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userValidation = exports.userPasswordValidator = exports.userBirthdateValidator = exports.userPhoneValidator = exports.userEmailValidator = exports.userRoleValidator = exports.userLastNameValidator = exports.userFirstNameValidator = exports.courseValidation = exports.lastNameValidator = exports.firstNameValidator = exports.nameValidator = void 0;
+exports.commentValidator = exports.userValidation = exports.userPasswordValidator = exports.userBirthdateValidator = exports.userPhoneValidator = exports.userEmailValidator = exports.userRoleValidator = exports.userLastNameValidator = exports.userFirstNameValidator = exports.courseValidation = exports.lastNameValidator = exports.firstNameValidator = exports.nameValidator = void 0;
 const express_validator_1 = require("express-validator");
 const isValidNorwegianPhone = (value) => {
     const regex = /^(\+47|0047)?[49]\d{7}$/; // This regex should match Norwegian mobile numbers
@@ -32,4 +32,5 @@ exports.userValidation = [
     exports.userBirthdateValidator.withMessage("Birthdate must be a valid date"),
     exports.userPasswordValidator.withMessage("Password must be between 8 and 100 characters long and cannot be empty")
 ];
+exports.commentValidator = (0, express_validator_1.body)("comment").trim().isLength({ min: 2, max: 1000 });
 //# sourceMappingURL=helpersValidator.js.map

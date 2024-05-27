@@ -4,6 +4,7 @@ import { HTTP_STATUSES } from './utils/httpstatuses';
 import { authorsRouter } from './routes/authors';
 import { usersRouter } from './routes/users';
 import { authRouter } from './routes/auth';
+import { feedbackRouter } from './routes/feedback';
 
 export const app = express();
 
@@ -16,3 +17,4 @@ app.use('/courses', coursesRouter);
 app.use('/authors', authorsRouter);
 app.use('/users', usersRouter);
 app.use('/auth', authRouter);
+app.use('/feedback', feedbackRouter);

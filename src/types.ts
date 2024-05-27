@@ -37,3 +37,10 @@ export type User = {
     created_at: string
 }
 
+export type Comment = {
+    id: number,
+    text: string,
+    user_id: number,
+    course_id: number
+};
+

@@ -1,5 +1,5 @@
 import { MongoClient, ServerApiVersion } from "mongodb";
-import type { Author, Course, User } from "../types";
+import type { Author, Course, User, Comment } from "../types";
 import { setting } from "../setting";
 
 const url = setting.MONGO_URI;
@@ -24,3 +24,4 @@ export const database = client.db("Learning");
 export const courses = database.collection<Course>("Courses");
 export const authors = database.collection<Author>("Authors");
 export const users = database.collection<User>("Users");
+export const comments = database.collection<Comment>("Comments");

@@ -36,3 +36,5 @@ export const userValidation = [
     userBirthdateValidator.withMessage("Birthdate must be a valid date"),
     userPasswordValidator.withMessage("Password must be between 8 and 100 characters long and cannot be empty")
 ];
+
+export const commentValidator = body("comment").trim().isLength({ min: 2, max: 1000 });

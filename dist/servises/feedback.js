@@ -11,15 +11,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.feedbackServises = void 0;
 const coursesFromDBCommand_1 = require("../repositories/coursesFromDBCommand");
-const authorsFromDBQueries_1 = require("../repositories/authorsFromDBQueries");
 const feedbackFromDBCommand_1 = require("../repositories/feedbackFromDBCommand");
 const coursesFromDBQueries_1 = require("../repositories/coursesFromDBQueries");
+const usersFromDBCommand_1 = require("../repositories/usersFromDBCommand");
 exports.feedbackServises = {
     deleteFeedback: (id) => __awaiter(void 0, void 0, void 0, function* () {
         return yield feedbackFromDBCommand_1.feedbackRepositoryCommand.deleteComment(id);
     }),
     sendFeedback: (text, user_id, course_id) => __awaiter(void 0, void 0, void 0, function* () {
-        const user = yield authorsFromDBQueries_1.authorsRepositoryQueries.getAuthorById(user_id);
+        const user = yield usersFromDBCommand_1.usersRepositoryCommand.getUserById(user_id);
         console.log("User from services feedback", user);
         if (!user) {
             return null;

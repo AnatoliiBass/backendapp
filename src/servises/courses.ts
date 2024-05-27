@@ -1,8 +1,9 @@
-import { Course } from "../types";
+import type { Comment, Course } from "../types";
 import type { CourseViewModel } from "../models/CourseViewModel";
 import {coursesRepositoryCommand} from "../repositories/coursesFromDBCommand"
 import { authorsRepositoryQueries } from "../repositories/authorsFromDBQueries";
 import { authorsRepositoryCommand } from "../repositories/authorsFromDBCommand";
+import { coursesRepositoryQueries } from "../repositories/coursesFromDBQueries";
 
 export const coursesServises = {
     deleteCourse: async (id: number):Promise<boolean> => {
@@ -23,11 +24,13 @@ export const coursesServises = {
             id: new Date().getTime(),
             name,
             usersAmount: 0,
-            author_id
+            author_id,
+            comments: []
         };
         return await coursesRepositoryCommand.createCourse(newCourse)
     },
-    updateCourse: async (id: number, name: string): Promise<CourseViewModel | null> => {
-        return await coursesRepositoryCommand.updateCourse(id, name)
+    updateCourse: async (id: number, name?: string, comments?: Comment[]): Promise<CourseViewModel | null> => {
+        const course = await coursesRepositoryQueries.getCourseById(id);
+        return await coursesRepositoryCommand.updateCourse(id, name || course.name, comments || course?.comments || [])
     } 
 }

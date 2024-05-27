@@ -23,8 +23,6 @@ const constants_1 = require("../constants");
 exports.coursesRepositoryQueries = {
     getAllCourses: (name, page, per_page, sort_by, sort_order) => __awaiter(void 0, void 0, void 0, function* () {
         var _a, e_1, _b, _c;
-        console.log("name: ", name, "page: ", page, "per_page: ", per_page);
-        console.log("sort_by: ", sort_by, "sort_order: ", sort_order);
         let filter = {};
         let sort = {};
         if (sort_by || (sort_order && sort_order.toLowerCase() === "desc")) {
@@ -42,9 +40,7 @@ exports.coursesRepositoryQueries = {
         const total = yield db_1.courses.countDocuments(filter);
         const correctPage = parseInt(page) && parseInt(page) > 0 ? parseInt(page) : constants_1.PAGE;
         const correctPerPage = parseInt(per_page) && parseInt(per_page) > 0 ? parseInt(per_page) : constants_1.PER_PAGE;
-        console.log("Total: ", total);
         const coursesWithAuthor = [];
-        console.log("getCourses: ", getCourses);
         if (getCourses.length > 0) {
             try {
                 for (var _d = true, getCourses_1 = __asyncValues(getCourses), getCourses_1_1; getCourses_1_1 = yield getCourses_1.next(), _a = getCourses_1_1.done, !_a; _d = true) {
@@ -65,7 +61,6 @@ exports.coursesRepositoryQueries = {
                 finally { if (e_1) throw e_1.error; }
             }
         }
-        console.log("coursesWithAuthor: ", coursesWithAuthor);
         if (coursesWithAuthor.length === 0 || correctPage > Math.ceil(total / correctPerPage)) {
             return null;
         }

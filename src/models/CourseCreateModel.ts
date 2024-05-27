@@ -1,3 +1,5 @@
+import { Comment } from "../types";
+
 export type CourseCreateModel = {
     /**
      * The course name if you created course.
@@ -8,4 +10,5 @@ export type CourseCreateModel = {
      */
     author_first_name: string;
     author_last_name: string;
+    comments: Comment[];
 }

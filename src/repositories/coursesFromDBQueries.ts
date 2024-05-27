@@ -8,9 +8,6 @@ export const coursesRepositoryQueries = {
   getAllCourses: async (
     name: string | undefined, page: string | undefined, per_page: string | undefined, sort_by: string | undefined, sort_order: string | undefined
   ): Promise<CourseViewModelObject | null> => {
-    console.log("name: ", name, "page: ", page, "per_page: ", per_page);
-    console.log("sort_by: ", sort_by, "sort_order: ", sort_order);
-    
     let filter = {};
     let sort = {};
     if (sort_by || (sort_order && sort_order.toLowerCase() === "desc")) {
@@ -27,9 +24,7 @@ export const coursesRepositoryQueries = {
     const total = await courses.countDocuments(filter);
     const correctPage = parseInt(page) && parseInt(page) > 0 ? parseInt(page) : PAGE;
     const correctPerPage = parseInt(per_page) && parseInt(per_page) > 0 ? parseInt(per_page) : PER_PAGE;
-    console.log("Total: ", total);
     const coursesWithAuthor: CourseViewModel[] = [];
-    console.log("getCourses: ", getCourses);
     if (getCourses.length > 0) {
       for await (const course of getCourses) {
         const author = await authors.findOne({ id: course.author_id });
@@ -38,7 +33,6 @@ export const coursesRepositoryQueries = {
         }
       }
     }
-    console.log("coursesWithAuthor: ", coursesWithAuthor);
     if(coursesWithAuthor.length === 0 || correctPage > Math.ceil(total / correctPerPage)){
       return null;
     }

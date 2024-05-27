@@ -20,11 +20,10 @@ exports.coursesRepositoryCommand = {
     createCourse: (course) => __awaiter(void 0, void 0, void 0, function* () {
         const result = yield db_1.courses.insertOne(course);
         const author = yield db_1.authors.findOne({ id: course.author_id });
-        console.log("Created result: ", result);
         return (0, getViewModelCourse_1.getViewModelCourse)(course, author);
     }),
-    updateCourse: (id, name) => __awaiter(void 0, void 0, void 0, function* () {
-        const result = yield db_1.courses.updateOne({ id }, { $set: { name } });
+    updateCourse: (id, name, comments) => __awaiter(void 0, void 0, void 0, function* () {
+        const result = yield db_1.courses.updateOne({ id }, { $set: { name, comments } });
         if (!result.matchedCount) {
             return null;
         }

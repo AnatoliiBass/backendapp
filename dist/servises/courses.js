@@ -13,6 +13,7 @@ exports.coursesServises = void 0;
 const coursesFromDBCommand_1 = require("../repositories/coursesFromDBCommand");
 const authorsFromDBQueries_1 = require("../repositories/authorsFromDBQueries");
 const authorsFromDBCommand_1 = require("../repositories/authorsFromDBCommand");
+const coursesFromDBQueries_1 = require("../repositories/coursesFromDBQueries");
 exports.coursesServises = {
     deleteCourse: (id) => __awaiter(void 0, void 0, void 0, function* () {
         return yield coursesFromDBCommand_1.coursesRepositoryCommand.deleteCourse(id);
@@ -38,12 +39,14 @@ exports.coursesServises = {
             id: new Date().getTime(),
             name,
             usersAmount: 0,
-            author_id
+            author_id,
+            comments: []
         };
         return yield coursesFromDBCommand_1.coursesRepositoryCommand.createCourse(newCourse);
     }),
-    updateCourse: (id, name) => __awaiter(void 0, void 0, void 0, function* () {
-        return yield coursesFromDBCommand_1.coursesRepositoryCommand.updateCourse(id, name);
+    updateCourse: (id, name, comments) => __awaiter(void 0, void 0, void 0, function* () {
+        const course = yield coursesFromDBQueries_1.coursesRepositoryQueries.getCourseById(id);
+        return yield coursesFromDBCommand_1.coursesRepositoryCommand.updateCourse(id, name || course.name, comments || (course === null || course === void 0 ? void 0 : course.comments) || []);
     })
 };
 //# sourceMappingURL=courses.js.map

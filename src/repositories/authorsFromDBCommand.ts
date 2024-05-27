@@ -10,7 +10,6 @@ export const authorsRepositoryCommand = {
     },
     createAuthor: async (author: Author):Promise<Author> => {
         const result = await authors.insertOne(author);
-        console.log("Created result: ", result);
         const authorSaved = await authors.findOne({id: author.id});
         return {id: authorSaved.id, first_name: authorSaved.first_name, last_name: authorSaved.last_name};
     },

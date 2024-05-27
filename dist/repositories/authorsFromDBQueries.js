@@ -33,7 +33,6 @@ exports.authorsRepositoryQueries = {
         }
         const getAuthors = yield db_1.authors.find(filter).toArray();
         const authorsWithCourses = [];
-        console.log("getAuthors: ", getAuthors);
         if (getAuthors.length > 0) {
             try {
                 for (var _d = true, getAuthors_1 = __asyncValues(getAuthors), getAuthors_1_1; getAuthors_1_1 = yield getAuthors_1.next(), _a = getAuthors_1_1.done, !_a; _d = true) {
@@ -67,7 +66,6 @@ exports.authorsRepositoryQueries = {
     getAuthorByFullName: (first_name, last_name) => __awaiter(void 0, void 0, void 0, function* () {
         var _e, e_2, _f, _g;
         const getAuthors = yield db_1.authors.find({ first_name, last_name }).toArray();
-        console.log("getAuthors: ", getAuthors);
         const authorsWithCourses = [];
         if (getAuthors.length > 0) {
             try {

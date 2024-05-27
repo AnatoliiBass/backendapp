@@ -41,10 +41,10 @@ describe("/courses", ()=>{
     it("should return 200 for existing course", async ()=>{
         const res = await request(app)
             .get("/courses/1714483108614")
-            .expect(HTTP_STATUSES.OK, {id: 1714483108614, name: "QA", author: {first_name: "Anatolii", last_name: "Bas"}});
+            .expect(HTTP_STATUSES.OK, {id: 1714483108614, name: "QA", author: {first_name: "Anatolii", last_name: "Bas"}, comments: []});
     })
     it("should'nt create a course with incorrect input data", async ()=>{
-        const data: CourseCreateModel = {name: "", author_first_name: "", author_last_name: ""};
+        const data: CourseCreateModel = {name: "", author_first_name: "", author_last_name: "", comments: []};
         await request(app)
             .post("/courses")
             .send(data)
@@ -55,7 +55,7 @@ describe("/courses", ()=>{
                 path: "author_last_name", location: "body" }] })
     })
     it("should'nt create a course with data which is exists", async ()=>{
-        const data: CourseCreateModel = {name: "Design", author_first_name: "Anatolii", author_last_name: "Bas"};
+        const data: CourseCreateModel = {name: "Design", author_first_name: "Anatolii", author_last_name: "Bas", comments: []};
         await request(app)
             .post("/courses")
             .send(data)
@@ -63,7 +63,7 @@ describe("/courses", ()=>{
     })
     let createdCourse: CourseViewModel;
     it("should create a course with correct input data", async ()=>{
-        const data: CourseCreateModel = {name: "Test1", author_first_name: "Test1", author_last_name: "Test1"};
+        const data: CourseCreateModel = {name: "Test1", author_first_name: "Test1", author_last_name: "Test1", comments: []};
         const createResponse = await request(app)
             .post("/courses")
             .send(data)
@@ -71,7 +71,7 @@ describe("/courses", ()=>{
 
         createdCourse = createResponse.body;
         expect(createdCourse).toEqual({id: expect.any(Number), name: data.name, 
-            author: {first_name: expect.any(String), last_name: expect.any(String)}})
+            author: {first_name: expect.any(String), last_name: expect.any(String)}, comments: []})
 
         const response = await request(app)
             .get("/courses")
@@ -80,7 +80,7 @@ describe("/courses", ()=>{
     })
     let createdCourse2: CourseViewModel;
     it("should create a course2 with correct input data", async ()=>{
-        const data: CourseCreateModel = {name: "Test2", author_first_name: "Test2", author_last_name: "Test2"};
+        const data: CourseCreateModel = {name: "Test2", author_first_name: "Test2", author_last_name: "Test2", comments: []};
         const createResponse = await request(app)
             .post("/courses")
             .send(data)
@@ -88,7 +88,7 @@ describe("/courses", ()=>{
 
         createdCourse2 = createResponse.body;
         expect(createdCourse2).toEqual({id: expect.any(Number), name: data.name, 
-            author: {first_name: expect.any(String), last_name: expect.any(String)}})
+            author: {first_name: expect.any(String), last_name: expect.any(String)}, comments: []})
 
         const response = await request(app)
             .get("/courses")

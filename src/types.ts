@@ -12,7 +12,8 @@ export type Course = {
     id: number,
     name: string,
     usersAmount: number,
-    author_id: number
+    author_id: number,
+    comments: Comment[]
 }
 
 export type CourseKeys = keyof Course;
@@ -41,6 +42,7 @@ export type Comment = {
     id: number,
     text: string,
     user_id: number,
+    user_full_name: string,
     course_id: number
 };
 

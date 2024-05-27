@@ -23,6 +23,7 @@ exports.feedbackRepositoryCommand = {
             id: commentSaved.id,
             text: commentSaved.text,
             user_id: commentSaved.user_id,
+            user_full_name: commentSaved.user_full_name,
             course_id: commentSaved.course_id
         };
     }),

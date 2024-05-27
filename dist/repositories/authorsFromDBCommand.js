@@ -19,7 +19,6 @@ exports.authorsRepositoryCommand = {
     }),
     createAuthor: (author) => __awaiter(void 0, void 0, void 0, function* () {
         const result = yield db_1.authors.insertOne(author);
-        console.log("Created result: ", result);
         const authorSaved = yield db_1.authors.findOne({ id: author.id });
         return { id: authorSaved.id, first_name: authorSaved.first_name, last_name: authorSaved.last_name };
     }),

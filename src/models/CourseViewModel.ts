@@ -1,3 +1,5 @@
+import type { Comment } from "../types";
+
 export type CourseViewModel = {
     /**
      * The course identifier with id and name.
@@ -8,6 +10,7 @@ export type CourseViewModel = {
         first_name: string;
         last_name: string;
     }
+    comments: Comment[];
 }
 
 export type CourseViewModelObject = {

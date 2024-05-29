@@ -7,7 +7,7 @@ export const emailAdapter = {
   async sendEmail(email: string, subject: string, message: string) {
     return resend.emails.send({
       from: "onboarding@resend.dev",
-      to: "basanatolii@gmail.com",
+      to: "basanatoliiee@gmail.com",
       subject: subject,
       html: `<p>${message}</p>`,
     });

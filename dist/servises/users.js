@@ -15,6 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.usersServises = void 0;
 const usersFromDBCommand_1 = require("../repositories/usersFromDBCommand");
 const bcrypt_1 = __importDefault(require("bcrypt"));
+const uuid_1 = __importDefault(require("uuid"));
+const add_1 = require("date-fns/add");
 exports.usersServises = {
     createUser(first_name, last_name, role, email, phone, birthdate, password) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -29,7 +31,12 @@ exports.usersServises = {
                 phone,
                 birthdate,
                 password: passwordHash,
-                created_at: new Date().toISOString()
+                created_at: new Date().toISOString(),
+                emailConfirmation: {
+                    code: uuid_1.default.v4(),
+                    expires_at: (0, add_1.add)(new Date(), { minutes: 3 }).toISOString(),
+                    isConfirmed: false
+                }
             };
             return yield usersFromDBCommand_1.usersRepositoryCommand.createUser(newUser);
         });
@@ -42,7 +49,7 @@ exports.usersServises = {
     checkCredentials(email, password) {
         return __awaiter(this, void 0, void 0, function* () {
             const user = yield usersFromDBCommand_1.usersRepositoryCommand.getUserByEmail(email);
-            if (!user) {
+            if (!user || !user.emailConfirmation.isConfirmed) {
                 return null;
             }
             const result = yield bcrypt_1.default.compare(password, user.password);

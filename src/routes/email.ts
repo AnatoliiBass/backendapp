@@ -16,7 +16,6 @@ emailRouter.post(
     res: Response<any | null>
   ) => {
     const result = await emailServices.sendEmail(_req.body.email, _req.body.subject, _req.body.message);
-    console.log("Result", result);
     if (result.data === null && result.error !== null) {
       res.statusCode = HTTP_STATUSES.BAD_REQUEST;
       res.statusMessage = "Email not sent";

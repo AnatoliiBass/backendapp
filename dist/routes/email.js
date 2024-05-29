@@ -17,7 +17,6 @@ const email_1 = require("../servises/email");
 exports.emailRouter = (0, express_1.Router)();
 exports.emailRouter.post("/send", helpersValidator_1.userEmailValidator, (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield email_1.emailServices.sendEmail(_req.body.email, _req.body.subject, _req.body.message);
-    console.log("Result", result);
     if (result.data === null && result.error !== null) {
         res.statusCode = httpstatuses_1.HTTP_STATUSES.BAD_REQUEST;
         res.statusMessage = "Email not sent";

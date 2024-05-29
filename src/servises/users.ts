@@ -1,6 +1,8 @@
 import { usersRepositoryCommand } from "../repositories/usersFromDBCommand";
-import { User } from "../types";
+import type { User } from "../types";
 import bcrypt from "bcrypt";
+import uuid from "uuid";
+import {add} from "date-fns/add";
 
 export const usersServises = {
     async createUser(first_name: string, last_name: string, role: string, email: string, phone: string,
@@ -16,7 +18,12 @@ export const usersServises = {
             phone,
             birthdate,
             password: passwordHash,
-            created_at: new Date().toISOString()
+            created_at: new Date().toISOString(),
+            emailConfirmation: {
+                code: uuid.v4(),
+                expires_at: add(new Date(), {minutes: 3}).toISOString(),
+                isConfirmed: false
+            }
         };
         return await usersRepositoryCommand.createUser(newUser)
     },
@@ -25,7 +32,7 @@ export const usersServises = {
     },
     async checkCredentials(email: string, password: string): Promise<User | null>{
         const user = await usersRepositoryCommand.getUserByEmail(email);
-        if(!user){
+        if(!user || !user.emailConfirmation.isConfirmed){
             return null;
         }
         const result = await bcrypt.compare(password, user.password);

@@ -26,6 +26,12 @@ export type Author = {
 
 export type AuthorKeys = keyof Author;
 
+export type EmailConfirmation = {
+    code: string,
+    expires_at: string,
+    isConfirmed: boolean
+}
+
 export type User = {
     id: number,
     role: string,
@@ -36,6 +42,7 @@ export type User = {
     birthdate: string,
     password: string,
     created_at: string
+    emailConfirmation: EmailConfirmation;
 }
 
 export type Comment = {

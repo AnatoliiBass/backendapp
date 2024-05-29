@@ -47,7 +47,7 @@ authRouter.post(
     _req: RequestWithBody<UserCreateModel>,
     res: Response<UserReturnModel | null>
   ) => {
-    const newUser = await usersServises.createUser(_req.body.first_name, _req.body.last_name, _req.body.role,
+    const newUser: UserReturnModel = await usersServises.createUser(_req.body.first_name, _req.body.last_name, _req.body.role,
       _req.body.email, _req.body.phone, _req.body.birthdate, _req.body.password);
     if (!newUser) {
       res.statusCode = HTTP_STATUSES.DATA_EXISTS;

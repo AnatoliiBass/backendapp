@@ -33,7 +33,7 @@ exports.usersServises = {
                 password: passwordHash,
                 created_at: new Date().toISOString(),
                 emailConfirmation: {
-                    code: uuid_1.default.v4(),
+                    code: uuid_1.default.v1(),
                     expires_at: (0, add_1.add)(new Date(), { minutes: 3 }).toISOString(),
                     isConfirmed: false
                 }

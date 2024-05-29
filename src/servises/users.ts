@@ -20,7 +20,7 @@ export const usersServises = {
             password: passwordHash,
             created_at: new Date().toISOString(),
             emailConfirmation: {
-                code: uuid.v4(),
+                code: uuid.v1(),
                 expires_at: add(new Date(), {minutes: 3}).toISOString(),
                 isConfirmed: false
             }

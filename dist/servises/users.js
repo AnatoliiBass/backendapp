@@ -38,7 +38,21 @@ exports.usersServises = {
                     isConfirmed: false
                 }
             };
-            return yield usersFromDBCommand_1.usersRepositoryCommand.createUser(newUser);
+            const createdUser = yield usersFromDBCommand_1.usersRepositoryCommand.createUser(newUser);
+            if (createdUser) {
+                return {
+                    id: createdUser.id,
+                    role: createdUser.role,
+                    first_name: createdUser.first_name,
+                    last_name: createdUser.last_name,
+                    email: createdUser.email,
+                    phone: createdUser.phone,
+                    birthdate: createdUser.birthdate
+                };
+            }
+            else {
+                return null;
+            }
         });
     },
     _generateHash(password, salt) {

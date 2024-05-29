@@ -1,8 +1,8 @@
 import { usersRepositoryCommand } from "../repositories/usersFromDBCommand";
 import type { User } from "../types";
 import bcrypt from "bcrypt";
-import uuid from "uuid";
 import {add} from "date-fns/add";
+import { uuid } from 'uuidv4';
 
 export const usersServises = {
     async createUser(first_name: string, last_name: string, role: string, email: string, phone: string,
@@ -20,7 +20,7 @@ export const usersServises = {
             password: passwordHash,
             created_at: new Date().toISOString(),
             emailConfirmation: {
-                code: uuid.v1(),
+                code: uuid(),
                 expires_at: add(new Date(), {minutes: 3}).toISOString(),
                 isConfirmed: false
             }

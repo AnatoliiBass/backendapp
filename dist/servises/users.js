@@ -15,8 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.usersServises = void 0;
 const usersFromDBCommand_1 = require("../repositories/usersFromDBCommand");
 const bcrypt_1 = __importDefault(require("bcrypt"));
-const uuid_1 = __importDefault(require("uuid"));
 const add_1 = require("date-fns/add");
+const uuidv4_1 = require("uuidv4");
 exports.usersServises = {
     createUser(first_name, last_name, role, email, phone, birthdate, password) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -33,7 +33,7 @@ exports.usersServises = {
                 password: passwordHash,
                 created_at: new Date().toISOString(),
                 emailConfirmation: {
-                    code: uuid_1.default.v1(),
+                    code: (0, uuidv4_1.uuid)(),
                     expires_at: (0, add_1.add)(new Date(), { minutes: 3 }).toISOString(),
                     isConfirmed: false
                 }

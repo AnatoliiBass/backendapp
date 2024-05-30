@@ -32,6 +32,7 @@ emailRouter.post(
     _req: RequestWithQuery<{code: string, id: string}>,
     res: Response<boolean>
   ) => {
+    console.log("Request in emailRouter: ", _req.query.code, parseInt(_req.query.id));
     const result = await emailServices.confirmEmail(_req.query.code, parseInt(_req.query.id));
     return res.status(HTTP_STATUSES.OK).json(result);
   }

@@ -21,7 +21,7 @@ exports.emailServices = {
     },
     sendConfirmEmail(user) {
         return __awaiter(this, void 0, void 0, function* () {
-            const result = yield email_1.emailAdapter.sendEmail(user.email, "Confirm email", `<a href="${setting_1.setting.PROJECT_URL}/email/confirm?code=${user.emailConfirmation.code}&id=${user.id}">
+            const result = yield email_1.emailAdapter.sendEmail(user.email, "Confirm email", `<a href="${setting_1.setting.PROJECT_URL}/email/confirm?code=${user.emailConfirmation.code}&id=${user.id.toString()}">
         Confirm email</a>`);
             if (result.data === null && result.error !== null) {
                 return false;
@@ -31,14 +31,18 @@ exports.emailServices = {
     },
     confirmEmail(code, id) {
         return __awaiter(this, void 0, void 0, function* () {
+            console.log("Request in emailRouter: ", code, id);
             const user = yield users_1.usersServises.getUserById(id);
+            console.log("User in emailRouter: ", user);
             if (!user)
                 return false;
+            console.log("User in emailRouter dates: ", user.emailConfirmation.expires_at, new Date().toISOString());
             if (user.emailConfirmation.expires_at >= new Date().toISOString())
                 return false;
             if (user.emailConfirmation.code !== code)
                 return false;
             const updatedUser = yield users_1.usersServises.updateUser(Object.assign(Object.assign({}, user), { emailConfirmation: Object.assign(Object.assign({}, user.emailConfirmation), { isConfirmed: true }) }));
+            console.log("Updated user in emailRouter: ", updatedUser);
             if (!updatedUser)
                 return false;
             return true;

@@ -17,7 +17,23 @@ const usersFromDBCommand_1 = require("../repositories/usersFromDBCommand");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const add_1 = require("date-fns/add");
 const uuidv4_1 = require("uuidv4");
+const email_1 = require("./email");
 exports.usersServises = {
+    deleteUser(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield usersFromDBCommand_1.usersRepositoryCommand.deleteUser(id);
+        });
+    },
+    updateUser(user) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield usersFromDBCommand_1.usersRepositoryCommand.updateUser(user);
+        });
+    },
+    getUserById(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield usersFromDBCommand_1.usersRepositoryCommand.getUserById(id);
+        });
+    },
     createUser(first_name, last_name, role, email, phone, birthdate, password) {
         return __awaiter(this, void 0, void 0, function* () {
             const passwordSalt = yield bcrypt_1.default.genSalt(10);
@@ -39,7 +55,8 @@ exports.usersServises = {
                 }
             };
             const createdUser = yield usersFromDBCommand_1.usersRepositoryCommand.createUser(newUser);
-            if (createdUser) {
+            const emailSent = yield email_1.emailServices.sendConfirmEmail(createdUser);
+            if (createdUser && emailSent) {
                 return {
                     id: createdUser.id,
                     role: createdUser.role,
@@ -51,6 +68,7 @@ exports.usersServises = {
                 };
             }
             else {
+                yield usersFromDBCommand_1.usersRepositoryCommand.deleteUser(createdUser.id);
                 return null;
             }
         });

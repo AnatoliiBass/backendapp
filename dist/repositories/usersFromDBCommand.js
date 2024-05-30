@@ -21,6 +21,14 @@ exports.usersRepositoryCommand = {
         const userSaved = yield db_1.users.findOne({ id: user.id });
         return userSaved;
     }),
+    updateUser: (user) => __awaiter(void 0, void 0, void 0, function* () {
+        const result = yield db_1.users.updateOne({ id: user.id }, { $set: user });
+        if (result.modifiedCount === 1) {
+            const userUpdated = yield db_1.users.findOne({ id: user.id });
+            return userUpdated;
+        }
+        return null;
+    }),
     getUserByEmail: (email) => __awaiter(void 0, void 0, void 0, function* () {
         const user = yield db_1.users.findOne({ email });
         if (!user) {

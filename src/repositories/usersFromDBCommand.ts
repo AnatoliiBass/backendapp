@@ -11,6 +11,14 @@ export const usersRepositoryCommand = {
         const userSaved = await users.findOne({id: user.id});
         return userSaved;
     },
+    updateUser: async (user: User):Promise<User | null> => {
+        const result = await users.updateOne({id: user.id}, {$set: user});
+        if(result.modifiedCount === 1){
+            const userUpdated = await users.findOne({id: user.id});
+            return userUpdated;
+        }
+        return null;
+    },
     getUserByEmail: async (email: string): Promise<User | null> => {
         const user =  await users.findOne({email});
         if(!user){

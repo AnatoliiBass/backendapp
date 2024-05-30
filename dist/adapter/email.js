@@ -18,9 +18,9 @@ exports.emailAdapter = {
         return __awaiter(this, void 0, void 0, function* () {
             return resend.emails.send({
                 from: "onboarding@resend.dev",
-                to: "basanatoliiee@gmail.com",
+                to: "basanatolii@gmail.com",
                 subject: subject,
-                html: `<p>${message}</p>`,
+                html: message,
             });
         });
     },

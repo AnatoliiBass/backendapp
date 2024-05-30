@@ -50,8 +50,8 @@ authRouter.post(
     const newUser: UserReturnModel = await usersServises.createUser(_req.body.first_name, _req.body.last_name, _req.body.role,
       _req.body.email, _req.body.phone, _req.body.birthdate, _req.body.password);
     if (!newUser) {
-      res.statusCode = HTTP_STATUSES.DATA_EXISTS;
-      res.statusMessage = "User already exists";
+      res.statusCode = HTTP_STATUSES.BAD_REQUEST;
+      res.statusMessage = "User not created";
       return res.json(null);
     }
     return res.status(HTTP_STATUSES.CREATED).json(newUser);

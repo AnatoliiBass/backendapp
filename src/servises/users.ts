@@ -4,8 +4,18 @@ import bcrypt from "bcrypt";
 import {add} from "date-fns/add";
 import type { UserReturnModel } from "../models/UserReturnModel";
 import { uuid } from 'uuidv4';
+import { emailServices } from "./email";
 
 export const usersServises = {
+    async deleteUser(id: number): Promise<boolean> {
+        return await usersRepositoryCommand.deleteUser(id)
+    },
+    async updateUser(user: User):Promise<User | null> {
+        return await usersRepositoryCommand.updateUser(user)
+    },
+    async getUserById(id: number): Promise<User | null> {
+        return await usersRepositoryCommand.getUserById(id)
+    },
     async createUser(first_name: string, last_name: string, role: string, email: string, phone: string,
         birthdate: string, password: string):Promise<UserReturnModel | null> {
         const passwordSalt = await bcrypt.genSalt(10);
@@ -27,7 +37,8 @@ export const usersServises = {
             }
         };
         const createdUser = await usersRepositoryCommand.createUser(newUser)
-        if(createdUser){
+        const emailSent = await emailServices.sendConfirmEmail(createdUser);
+        if(createdUser && emailSent){
             return {
                 id: createdUser.id,
                 role: createdUser.role,
@@ -38,6 +49,7 @@ export const usersServises = {
                 birthdate: createdUser.birthdate
             }
         }else{
+            await usersRepositoryCommand.deleteUser(createdUser.id);
             return null
         }
     },

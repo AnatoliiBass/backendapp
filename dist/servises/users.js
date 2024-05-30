@@ -24,9 +24,9 @@ exports.usersServises = {
             return yield usersFromDBCommand_1.usersRepositoryCommand.deleteUser(id);
         });
     },
-    updateUser(user) {
+    updateUserConfirm(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield usersFromDBCommand_1.usersRepositoryCommand.updateUser(user);
+            return yield usersFromDBCommand_1.usersRepositoryCommand.updateUserConfirm(id);
         });
     },
     getUserById(id) {

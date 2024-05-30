@@ -10,8 +10,8 @@ export const usersServises = {
     async deleteUser(id: number): Promise<boolean> {
         return await usersRepositoryCommand.deleteUser(id)
     },
-    async updateUser(user: User):Promise<User | null> {
-        return await usersRepositoryCommand.updateUser(user)
+    async updateUserConfirm(id: number):Promise<User | null> {
+        return await usersRepositoryCommand.updateUserConfirm(id)
     },
     async getUserById(id: number): Promise<User | null> {
         return await usersRepositoryCommand.getUserById(id)

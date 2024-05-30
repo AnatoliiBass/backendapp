@@ -2,6 +2,7 @@ import type { User } from "../types";
 import { emailAdapter } from "../adapter/email";
 import { usersServises } from "./users";
 import { setting } from "../setting";
+import { usersRepositoryCommand } from "../repositories/usersFromDBCommand";
 
 export const emailServices = {
     async sendEmail(email: string, subject: string, message: string) {
@@ -17,15 +18,12 @@ export const emailServices = {
         return true;
     },
     async confirmEmail(code: string, id: number) {
-        console.log("Request in emailRouter: ", code, id);
         const user = await usersServises.getUserById(id);
-        console.log("User in emailRouter: ", user);
         if(!user) return false;
-        console.log("User in emailRouter dates: ", user.emailConfirmation.expires_at, new Date().toISOString());
-        if(user.emailConfirmation.expires_at >= new Date().toISOString()) return false;
+        if (user.emailConfirmation.isConfirmed) return false;
+        if(user.emailConfirmation.expires_at <= new Date().toISOString()) return false;
         if(user.emailConfirmation.code !== code) return false;
-        const updatedUser = await usersServises.updateUser({...user, emailConfirmation: {...user.emailConfirmation, isConfirmed: true}});
-        console.log("Updated user in emailRouter: ", updatedUser);
+        const updatedUser = await usersRepositoryCommand.updateUserConfirm(id);
         if(!updatedUser) return false;
         return true;
     }

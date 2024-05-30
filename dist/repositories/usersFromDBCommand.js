@@ -21,10 +21,10 @@ exports.usersRepositoryCommand = {
         const userSaved = yield db_1.users.findOne({ id: user.id });
         return userSaved;
     }),
-    updateUser: (user) => __awaiter(void 0, void 0, void 0, function* () {
-        const result = yield db_1.users.updateOne({ id: user.id }, { $set: user });
+    updateUserConfirm: (id) => __awaiter(void 0, void 0, void 0, function* () {
+        const result = yield db_1.users.updateOne({ id }, { $set: { "emailConfirmation.isConfirmed": true } });
         if (result.modifiedCount === 1) {
-            const userUpdated = yield db_1.users.findOne({ id: user.id });
+            const userUpdated = yield db_1.users.findOne({ id });
             return userUpdated;
         }
         return null;

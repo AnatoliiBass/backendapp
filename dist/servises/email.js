@@ -13,6 +13,7 @@ exports.emailServices = void 0;
 const email_1 = require("../adapter/email");
 const users_1 = require("./users");
 const setting_1 = require("../setting");
+const usersFromDBCommand_1 = require("../repositories/usersFromDBCommand");
 exports.emailServices = {
     sendEmail(email, subject, message) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -31,18 +32,16 @@ exports.emailServices = {
     },
     confirmEmail(code, id) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log("Request in emailRouter: ", code, id);
             const user = yield users_1.usersServises.getUserById(id);
-            console.log("User in emailRouter: ", user);
             if (!user)
                 return false;
-            console.log("User in emailRouter dates: ", user.emailConfirmation.expires_at, new Date().toISOString());
-            if (user.emailConfirmation.expires_at >= new Date().toISOString())
+            if (user.emailConfirmation.isConfirmed)
+                return false;
+            if (user.emailConfirmation.expires_at <= new Date().toISOString())
                 return false;
             if (user.emailConfirmation.code !== code)
                 return false;
-            const updatedUser = yield users_1.usersServises.updateUser(Object.assign(Object.assign({}, user), { emailConfirmation: Object.assign(Object.assign({}, user.emailConfirmation), { isConfirmed: true }) }));
-            console.log("Updated user in emailRouter: ", updatedUser);
+            const updatedUser = yield usersFromDBCommand_1.usersRepositoryCommand.updateUserConfirm(id);
             if (!updatedUser)
                 return false;
             return true;

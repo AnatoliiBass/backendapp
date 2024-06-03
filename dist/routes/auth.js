@@ -41,4 +41,8 @@ exports.authRouter.post("/register", ...helpersValidator_1.userValidation, valid
     }
     return res.status(httpstatuses_1.HTTP_STATUSES.CREATED).json(newUser);
 }));
+exports.authRouter.post("/resetPassword", helpersValidator_1.userEmailValidator, helpersValidator_1.userPasswordValidator, validation_1.standartValidation, (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield users_1.usersServises.resetPassword(_req.body.email, _req.body.password);
+    return res.status(httpstatuses_1.HTTP_STATUSES.OK).json(result);
+}));
 //# sourceMappingURL=auth.js.map

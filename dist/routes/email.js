@@ -24,8 +24,21 @@ exports.emailRouter.post("/send", helpersValidator_1.userEmailValidator, (_req, 
     }
     return res.status(httpstatuses_1.HTTP_STATUSES.OK).json(result);
 }));
-exports.emailRouter.post("/confirm", helpersValidator_1.userEmailValidator, (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.emailRouter.post("/confirmEmail", helpersValidator_1.userCodeValidator, (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield email_1.emailServices.confirmEmail(_req.query.code);
+    return res.status(httpstatuses_1.HTTP_STATUSES.OK).json(result);
+}));
+exports.emailRouter.post("/sendResetPassword", helpersValidator_1.userEmailValidator, (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield email_1.emailServices.sendResetPassword(_req.body.email);
+    if (!result) {
+        res.statusCode = httpstatuses_1.HTTP_STATUSES.BAD_REQUEST;
+        res.statusMessage = "Email not sent. Please, try again after 5 min or your user is blocked(after 5 times).";
+        return res.json(null);
+    }
+    return res.status(httpstatuses_1.HTTP_STATUSES.OK).json(result);
+}));
+exports.emailRouter.post("/confirmResetPasswordEmail", helpersValidator_1.userCodeValidator, (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield email_1.emailServices.confirmResetPassword(_req.query.code);
     return res.status(httpstatuses_1.HTTP_STATUSES.OK).json(result);
 }));
 //# sourceMappingURL=email.js.map

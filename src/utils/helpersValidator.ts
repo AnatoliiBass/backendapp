@@ -1,4 +1,4 @@
-import { body } from "express-validator";
+import { body, query } from "express-validator";
 
 const isValidNorwegianPhone = (value: string) => {
     const regex = /^(\+47|0047)?[49]\d{7}$/; // This regex should match Norwegian mobile numbers
@@ -24,6 +24,7 @@ export const userFirstNameValidator = body("first_name").trim().isLength({ min: 
 export const userLastNameValidator = body("last_name").trim().isLength({ min: 2, max: 100 });
 export const userRoleValidator = body("role").trim().isLowercase().isIn(["student", "author", "admin"]);
 export const userEmailValidator = body("email").trim().isEmail();
+export const userCodeValidator = query("code").trim().isLength({ min: 8 });
 export const userPhoneValidator = body("phone").trim().isLength({ min: 8, max: 100 });
 export const userBirthdateValidator = body("birthdate").trim().isISO8601();
 export const userPasswordValidator = body("password").trim().isLength({ min: 8, max: 100 });

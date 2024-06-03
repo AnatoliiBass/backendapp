@@ -32,6 +32,14 @@ export type EmailConfirmation = {
     isConfirmed: boolean
 }
 
+export type ResetPassword = {
+    code: string,
+    expires_at: string | null,
+    isConfirmed: boolean,
+    isBlocked: boolean,
+    count: number
+}
+
 export type User = {
     id: number,
     role: string,
@@ -43,6 +51,7 @@ export type User = {
     password: string,
     created_at: string
     emailConfirmation: EmailConfirmation;
+    resetPassword: ResetPassword | null;
 }
 
 export type Comment = {

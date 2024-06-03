@@ -62,3 +62,17 @@ authRouter.post(
     return res.status(HTTP_STATUSES.CREATED).json(newUser);
   }
 );
+
+authRouter.post(
+  "/resetPassword",
+  userEmailValidator,
+  userPasswordValidator,
+  standartValidation,
+  async (
+    _req: RequestWithBody<{ email: string, password: string }>,
+    res: Response<boolean>
+  ) => {
+    const result = await usersServises.resetPassword(_req.body.email, _req.body.password);
+    return res.status(HTTP_STATUSES.OK).json(result);
+  }
+)

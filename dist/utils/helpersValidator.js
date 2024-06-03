@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.commentValidator = exports.userValidation = exports.userPasswordValidator = exports.userBirthdateValidator = exports.userPhoneValidator = exports.userEmailValidator = exports.userRoleValidator = exports.userLastNameValidator = exports.userFirstNameValidator = exports.courseValidation = exports.lastNameValidator = exports.firstNameValidator = exports.nameValidator = void 0;
+exports.commentValidator = exports.userValidation = exports.userPasswordValidator = exports.userBirthdateValidator = exports.userPhoneValidator = exports.userCodeValidator = exports.userEmailValidator = exports.userRoleValidator = exports.userLastNameValidator = exports.userFirstNameValidator = exports.courseValidation = exports.lastNameValidator = exports.firstNameValidator = exports.nameValidator = void 0;
 const express_validator_1 = require("express-validator");
 const isValidNorwegianPhone = (value) => {
     const regex = /^(\+47|0047)?[49]\d{7}$/; // This regex should match Norwegian mobile numbers
@@ -21,6 +21,7 @@ exports.userFirstNameValidator = (0, express_validator_1.body)("first_name").tri
 exports.userLastNameValidator = (0, express_validator_1.body)("last_name").trim().isLength({ min: 2, max: 100 });
 exports.userRoleValidator = (0, express_validator_1.body)("role").trim().isLowercase().isIn(["student", "author", "admin"]);
 exports.userEmailValidator = (0, express_validator_1.body)("email").trim().isEmail();
+exports.userCodeValidator = (0, express_validator_1.query)("code").trim().isLength({ min: 8 });
 exports.userPhoneValidator = (0, express_validator_1.body)("phone").trim().isLength({ min: 8, max: 100 });
 exports.userBirthdateValidator = (0, express_validator_1.body)("birthdate").trim().isISO8601();
 exports.userPasswordValidator = (0, express_validator_1.body)("password").trim().isLength({ min: 8, max: 100 });

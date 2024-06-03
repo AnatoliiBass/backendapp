@@ -1,5 +1,5 @@
 import { users } from "../db/db";
-import type { User } from "../types";
+import type { ResetPassword, User } from "../types";
 
 export const usersRepositoryCommand = {
     deleteUser: async (id: number):Promise<boolean> => {
@@ -19,6 +19,27 @@ export const usersRepositoryCommand = {
         }
         return null;
     },
+    updateUserResetPassword: async (id: number, obj: ResetPassword):Promise<User | null> => {
+        const result = await users.updateOne({id}, {$set: {resetPassword: obj}});
+        if(result.modifiedCount === 1){
+            const userUpdated = await users.findOne({id});
+            if(userUpdated && userUpdated.resetPassword && userUpdated.resetPassword.code === obj.code){
+                return userUpdated;
+            }
+        }
+        return null;
+    },
+    updateUserPassword: async (id: number, passwordHash: string):Promise<User | null> => {
+        const result = await users.updateOne({id}, {$set: {password: passwordHash, 'resetPassword.isConfirmed': false,
+            'resetPassword.expires_at': null}});
+        if(result.modifiedCount === 1){
+            const userUpdated = await users.findOne({id});
+            if(userUpdated && userUpdated.password === passwordHash){
+                return userUpdated;
+            }
+        }
+        return null;
+    },
     getUserByEmail: async (email: string): Promise<User | null> => {
         const user =  await users.findOne({email});
         if(!user){
@@ -28,6 +49,13 @@ export const usersRepositoryCommand = {
     },
     getUserByConfirmCode: async (code: string): Promise<User | null> => {
         const user =  await users.findOne({"emailConfirmation.code": code});
+        if(!user){
+            return null;
+        }
+        return user;
+    },
+    getUserByConfirmResetPasswordCode: async (code: string): Promise<User | null> => {
+        const user =  await users.findOne({"resetPassword.code": code});
         if(!user){
             return null;
         }

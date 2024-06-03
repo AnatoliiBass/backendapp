@@ -2,7 +2,7 @@ import { Router } from "express";
 import type { Response } from "express";
 import type { RequestWithBody, RequestWithQuery } from "../types";
 import type { EmailModel } from "../models/EmailModel";
-import { userEmailValidator } from "../utils/helpersValidator";
+import { userCodeValidator, userEmailValidator } from "../utils/helpersValidator";
 import { HTTP_STATUSES } from "../utils/httpstatuses";
 import { emailServices } from "../servises/email";
 
@@ -26,13 +26,42 @@ emailRouter.post(
 );
 
 emailRouter.post(
-  "/confirm",
-  userEmailValidator,
+  "/confirmEmail",
+  userCodeValidator,
   async (
     _req: RequestWithQuery<{code: string}>,
     res: Response<boolean>
   ) => {
     const result = await emailServices.confirmEmail(_req.query.code);
+    return res.status(HTTP_STATUSES.OK).json(result);
+  }
+);
+
+emailRouter.post(
+  "/sendResetPassword",
+  userEmailValidator,
+  async (
+    _req: RequestWithBody<{email: string}>,
+    res: Response<boolean>
+  ) => {
+    const result = await emailServices.sendResetPassword(_req.body.email);
+    if (!result) {
+      res.statusCode = HTTP_STATUSES.BAD_REQUEST;
+      res.statusMessage = "Email not sent. Please, try again after 5 min or your user is blocked(after 5 times).";
+      return res.json(null);
+    }
+    return res.status(HTTP_STATUSES.OK).json(result);
+  }
+);
+
+emailRouter.post(
+  "/confirmResetPasswordEmail",
+  userCodeValidator,
+  async (
+    _req: RequestWithQuery<{code: string}>,
+    res: Response<boolean>
+  ) => {
+    const result = await emailServices.confirmResetPassword(_req.query.code);
     return res.status(HTTP_STATUSES.OK).json(result);
   }
 );

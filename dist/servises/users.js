@@ -59,7 +59,8 @@ exports.usersServises = {
                     code: (0, uuidv4_1.uuid)(),
                     expires_at: (0, add_1.add)(new Date(), { minutes: 5 }).toISOString(),
                     isConfirmed: false
-                }
+                },
+                resetPassword: null
             };
             const createdUser = yield usersFromDBCommand_1.usersRepositoryCommand.createUser(newUser);
             const emailSent = yield email_1.emailServices.sendConfirmEmail(createdUser);
@@ -71,7 +72,7 @@ exports.usersServises = {
                     last_name: createdUser.last_name,
                     email: createdUser.email,
                     phone: createdUser.phone,
-                    birthdate: createdUser.birthdate
+                    birthdate: createdUser.birthdate,
                 };
             }
             else {
@@ -98,6 +99,21 @@ exports.usersServises = {
             else {
                 return null;
             }
+        });
+    },
+    resetPassword(email, password) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user = yield usersFromDBCommand_1.usersRepositoryCommand.getUserByEmail(email);
+            if (!user)
+                return false;
+            if (!user.resetPassword.isConfirmed)
+                return false;
+            const passwordSalt = yield bcrypt_1.default.genSalt(10);
+            const passwordHash = yield this._generateHash(password, passwordSalt);
+            const updatedUser = yield usersFromDBCommand_1.usersRepositoryCommand.updateUserPassword(user.id, passwordHash);
+            if (!updatedUser)
+                return false;
+            return true;
         });
     }
 };

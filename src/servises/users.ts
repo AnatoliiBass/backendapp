@@ -2,8 +2,8 @@ import { usersRepositoryCommand } from "../repositories/usersFromDBCommand";
 import type { User } from "../types";
 import bcrypt from "bcrypt";
 import {add} from "date-fns/add";
-import type { UserReturnModel } from "../models/UserReturnModel";
 import { uuid } from 'uuidv4';
+import type { UserReturnModel } from "../models/UserReturnModel";
 import { emailServices } from "./email";
 
 export const usersServises = {
@@ -41,7 +41,8 @@ export const usersServises = {
                 code: uuid(),
                 expires_at: add(new Date(), {minutes: 5}).toISOString(),
                 isConfirmed: false
-            }
+            },
+            resetPassword: null
         };
         const createdUser = await usersRepositoryCommand.createUser(newUser)
         const emailSent = await emailServices.sendConfirmEmail(createdUser);
@@ -53,7 +54,7 @@ export const usersServises = {
                 last_name: createdUser.last_name,
                 email: createdUser.email,
                 phone: createdUser.phone,
-                birthdate: createdUser.birthdate
+                birthdate: createdUser.birthdate,
             }
         }else{
             await usersRepositoryCommand.deleteUser(createdUser.id);
@@ -74,5 +75,15 @@ export const usersServises = {
         }else{
             return null
         }
+    },
+    async resetPassword(email: string, password: string) {
+        const user = await usersRepositoryCommand.getUserByEmail(email);
+        if(!user) return false;
+        if(!user.resetPassword.isConfirmed) return false;
+        const passwordSalt = await bcrypt.genSalt(10);
+        const passwordHash = await this._generateHash(password, passwordSalt);
+        const updatedUser = await usersRepositoryCommand.updateUserPassword(user.id, passwordHash);
+        if(!updatedUser) return false;
+        return true;
     }
 }

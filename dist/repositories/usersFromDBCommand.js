@@ -29,6 +29,27 @@ exports.usersRepositoryCommand = {
         }
         return null;
     }),
+    updateUserResetPassword: (id, obj) => __awaiter(void 0, void 0, void 0, function* () {
+        const result = yield db_1.users.updateOne({ id }, { $set: { resetPassword: obj } });
+        if (result.modifiedCount === 1) {
+            const userUpdated = yield db_1.users.findOne({ id });
+            if (userUpdated && userUpdated.resetPassword && userUpdated.resetPassword.code === obj.code) {
+                return userUpdated;
+            }
+        }
+        return null;
+    }),
+    updateUserPassword: (id, passwordHash) => __awaiter(void 0, void 0, void 0, function* () {
+        const result = yield db_1.users.updateOne({ id }, { $set: { password: passwordHash, 'resetPassword.isConfirmed': false,
+                'resetPassword.expires_at': null } });
+        if (result.modifiedCount === 1) {
+            const userUpdated = yield db_1.users.findOne({ id });
+            if (userUpdated && userUpdated.password === passwordHash) {
+                return userUpdated;
+            }
+        }
+        return null;
+    }),
     getUserByEmail: (email) => __awaiter(void 0, void 0, void 0, function* () {
         const user = yield db_1.users.findOne({ email });
         if (!user) {
@@ -38,6 +59,13 @@ exports.usersRepositoryCommand = {
     }),
     getUserByConfirmCode: (code) => __awaiter(void 0, void 0, void 0, function* () {
         const user = yield db_1.users.findOne({ "emailConfirmation.code": code });
+        if (!user) {
+            return null;
+        }
+        return user;
+    }),
+    getUserByConfirmResetPasswordCode: (code) => __awaiter(void 0, void 0, void 0, function* () {
+        const user = yield db_1.users.findOne({ "resetPassword.code": code });
         if (!user) {
             return null;
         }

@@ -36,6 +36,13 @@ exports.usersServises = {
     },
     createUser(first_name, last_name, role, email, phone, birthdate, password) {
         return __awaiter(this, void 0, void 0, function* () {
+            const userByEmail = yield usersFromDBCommand_1.usersRepositoryCommand.getUserByEmail(email);
+            if ((userByEmail && userByEmail.emailConfirmation.isConfirmed === true) || (userByEmail && !userByEmail.emailConfirmation.isConfirmed && userByEmail.emailConfirmation.expires_at > new Date().toISOString())) {
+                return undefined;
+            }
+            if (userByEmail && !userByEmail.emailConfirmation.isConfirmed && userByEmail.emailConfirmation.expires_at <= new Date().toISOString()) {
+                yield usersFromDBCommand_1.usersRepositoryCommand.deleteUser(userByEmail.id);
+            }
             const passwordSalt = yield bcrypt_1.default.genSalt(10);
             const passwordHash = yield this._generateHash(password, passwordSalt);
             const newUser = {
@@ -50,7 +57,7 @@ exports.usersServises = {
                 created_at: new Date().toISOString(),
                 emailConfirmation: {
                     code: (0, uuidv4_1.uuid)(),
-                    expires_at: (0, add_1.add)(new Date(), { minutes: 3 }).toISOString(),
+                    expires_at: (0, add_1.add)(new Date(), { minutes: 5 }).toISOString(),
                     isConfirmed: false
                 }
             };

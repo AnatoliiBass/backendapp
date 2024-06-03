@@ -17,7 +17,14 @@ export const usersServises = {
         return await usersRepositoryCommand.getUserById(id)
     },
     async createUser(first_name: string, last_name: string, role: string, email: string, phone: string,
-        birthdate: string, password: string):Promise<UserReturnModel | null> {
+        birthdate: string, password: string):Promise<UserReturnModel | null | undefined> {
+        const userByEmail = await usersRepositoryCommand.getUserByEmail(email);
+        if((userByEmail && userByEmail.emailConfirmation.isConfirmed === true) || (userByEmail && !userByEmail.emailConfirmation.isConfirmed && userByEmail.emailConfirmation.expires_at > new Date().toISOString())){
+            return undefined
+        }
+        if(userByEmail && !userByEmail.emailConfirmation.isConfirmed && userByEmail.emailConfirmation.expires_at <= new Date().toISOString()){
+            await usersRepositoryCommand.deleteUser(userByEmail.id);
+        }
         const passwordSalt = await bcrypt.genSalt(10);
         const passwordHash = await this._generateHash(password, passwordSalt);
         const newUser: User = {
@@ -32,7 +39,7 @@ export const usersServises = {
             created_at: new Date().toISOString(),
             emailConfirmation: {
                 code: uuid(),
-                expires_at: add(new Date(), {minutes: 3}).toISOString(),
+                expires_at: add(new Date(), {minutes: 5}).toISOString(),
                 isConfirmed: false
             }
         };

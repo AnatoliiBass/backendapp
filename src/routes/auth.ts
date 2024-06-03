@@ -45,13 +45,18 @@ authRouter.post(
   standartValidation,
   async (
     _req: RequestWithBody<UserCreateModel>,
-    res: Response<UserReturnModel | null>
+    res: Response<UserReturnModel | null | undefined>
   ) => {
     const newUser: UserReturnModel = await usersServises.createUser(_req.body.first_name, _req.body.last_name, _req.body.role,
       _req.body.email, _req.body.phone, _req.body.birthdate, _req.body.password);
-    if (!newUser) {
+    if (newUser === null) {
       res.statusCode = HTTP_STATUSES.BAD_REQUEST;
       res.statusMessage = "User not created";
+      return res.json(null);
+    }
+    if (newUser === undefined) {
+      res.statusCode = HTTP_STATUSES.DATA_EXISTS;
+      res.statusMessage = "User already exists. Please, try another email, or try to confirm your email, or try again after 5 min.";
       return res.json(null);
     }
     return res.status(HTTP_STATUSES.CREATED).json(newUser);

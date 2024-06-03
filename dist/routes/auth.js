@@ -29,9 +29,14 @@ exports.authRouter.post("/login", helpersValidator_1.userEmailValidator, helpers
 }));
 exports.authRouter.post("/register", ...helpersValidator_1.userValidation, validation_1.standartValidation, (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const newUser = yield users_1.usersServises.createUser(_req.body.first_name, _req.body.last_name, _req.body.role, _req.body.email, _req.body.phone, _req.body.birthdate, _req.body.password);
-    if (!newUser) {
+    if (newUser === null) {
         res.statusCode = httpstatuses_1.HTTP_STATUSES.BAD_REQUEST;
         res.statusMessage = "User not created";
+        return res.json(null);
+    }
+    if (newUser === undefined) {
+        res.statusCode = httpstatuses_1.HTTP_STATUSES.DATA_EXISTS;
+        res.statusMessage = "User already exists. Please, try another email, or try to confirm your email, or try again after 5 min.";
         return res.json(null);
     }
     return res.status(httpstatuses_1.HTTP_STATUSES.CREATED).json(newUser);

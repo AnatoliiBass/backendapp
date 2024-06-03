@@ -21,6 +21,8 @@ exports.emailServices = {
     },
     sendConfirmEmail(user) {
         return __awaiter(this, void 0, void 0, function* () {
+            if (user.emailConfirmation.isConfirmed)
+                return false;
             const result = yield email_1.emailAdapter.sendEmail(user.email, "Confirm email", `<a href="${setting_1.setting.PROJECT_URL}/email/confirm?code=${user.emailConfirmation.code}">
         Confirm email</a>`);
             if (result.data === null && result.error !== null) {

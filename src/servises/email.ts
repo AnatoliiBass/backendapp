@@ -8,6 +8,7 @@ export const emailServices = {
         return await emailAdapter.sendEmail(email, subject, `<p>${message}</p>`);
     },
     async sendConfirmEmail(user: User) {
+        if (user.emailConfirmation.isConfirmed) return false;
         const result = await emailAdapter.sendEmail(user.email, "Confirm email", 
         `<a href="${setting.PROJECT_URL}/email/confirm?code=${user.emailConfirmation.code}">
         Confirm email</a>`);

@@ -26,6 +26,13 @@ export const usersRepositoryCommand = {
         }
         return user;
     },
+    getUserByConfirmCode: async (code: string): Promise<User | null> => {
+        const user =  await users.findOne({"emailConfirmation.code": code});
+        if(!user){
+            return null;
+        }
+        return user;
+    },
     getUserById: async (id: number): Promise<User | null> => {
         const user =  await users.findOne({id});
         if(!user){

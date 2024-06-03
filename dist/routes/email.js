@@ -25,8 +25,7 @@ exports.emailRouter.post("/send", helpersValidator_1.userEmailValidator, (_req, 
     return res.status(httpstatuses_1.HTTP_STATUSES.OK).json(result);
 }));
 exports.emailRouter.post("/confirm", helpersValidator_1.userEmailValidator, (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("Request in emailRouter: ", _req.query.code, parseInt(_req.query.id));
-    const result = yield email_1.emailServices.confirmEmail(_req.query.code, parseInt(_req.query.id));
+    const result = yield email_1.emailServices.confirmEmail(_req.query.code);
     return res.status(httpstatuses_1.HTTP_STATUSES.OK).json(result);
 }));
 //# sourceMappingURL=email.js.map

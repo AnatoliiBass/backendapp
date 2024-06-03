@@ -36,6 +36,13 @@ exports.usersRepositoryCommand = {
         }
         return user;
     }),
+    getUserByConfirmCode: (code) => __awaiter(void 0, void 0, void 0, function* () {
+        const user = yield db_1.users.findOne({ "emailConfirmation.code": code });
+        if (!user) {
+            return null;
+        }
+        return user;
+    }),
     getUserById: (id) => __awaiter(void 0, void 0, void 0, function* () {
         const user = yield db_1.users.findOne({ id });
         if (!user) {

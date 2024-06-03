@@ -11,7 +11,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.emailServices = void 0;
 const email_1 = require("../adapter/email");
-const users_1 = require("./users");
 const setting_1 = require("../setting");
 const usersFromDBCommand_1 = require("../repositories/usersFromDBCommand");
 exports.emailServices = {
@@ -22,7 +21,7 @@ exports.emailServices = {
     },
     sendConfirmEmail(user) {
         return __awaiter(this, void 0, void 0, function* () {
-            const result = yield email_1.emailAdapter.sendEmail(user.email, "Confirm email", `<a href="${setting_1.setting.PROJECT_URL}/email/confirm?code=${user.emailConfirmation.code}&id=${user.id.toString()}">
+            const result = yield email_1.emailAdapter.sendEmail(user.email, "Confirm email", `<a href="${setting_1.setting.PROJECT_URL}/email/confirm?code=${user.emailConfirmation.code}">
         Confirm email</a>`);
             if (result.data === null && result.error !== null) {
                 return false;
@@ -30,9 +29,9 @@ exports.emailServices = {
             return true;
         });
     },
-    confirmEmail(code, id) {
+    confirmEmail(code) {
         return __awaiter(this, void 0, void 0, function* () {
-            const user = yield users_1.usersServises.getUserById(id);
+            const user = yield usersFromDBCommand_1.usersRepositoryCommand.getUserByConfirmCode(code);
             if (!user)
                 return false;
             if (user.emailConfirmation.isConfirmed)
@@ -41,7 +40,7 @@ exports.emailServices = {
                 return false;
             if (user.emailConfirmation.code !== code)
                 return false;
-            const updatedUser = yield usersFromDBCommand_1.usersRepositoryCommand.updateUserConfirm(id);
+            const updatedUser = yield usersFromDBCommand_1.usersRepositoryCommand.updateUserConfirm(user.id);
             if (!updatedUser)
                 return false;
             return true;

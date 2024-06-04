@@ -17,8 +17,9 @@ const setting_1 = require("../setting");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 exports.jwtService = {
     generateToken: (user) => __awaiter(void 0, void 0, void 0, function* () {
-        const token = jsonwebtoken_1.default.sign({ id: user.id, role: user.role }, setting_1.setting.JWT_SECRET, { expiresIn: "1h" });
-        return token;
+        const token = jsonwebtoken_1.default.sign({ id: user.id, role: user.role }, setting_1.setting.JWT_SECRET, { expiresIn: "1m" });
+        const refreshToken = jsonwebtoken_1.default.sign({ date: new Date().toUTCString(), id: user.id }, setting_1.setting.JWT_REFRESH_SECRET, { expiresIn: "5m" });
+        return { token, refreshToken };
     }),
     verifyToken: (token) => __awaiter(void 0, void 0, void 0, function* () {
         try {
@@ -27,6 +28,21 @@ exports.jwtService = {
                 return null;
             }
             return parseInt(decoded.id);
+        }
+        catch (err) {
+            return null;
+        }
+    }),
+    verifyRefreshToken: (token) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const decoded = jsonwebtoken_1.default.verify(token, setting_1.setting.JWT_REFRESH_SECRET);
+            if (typeof decoded === 'string') {
+                return null;
+            }
+            if (decoded.date <= new Date().toUTCString()) {
+                return null;
+            }
+            return { user_id: parseInt(decoded.id), date: decoded.date };
         }
         catch (err) {
             return null;

@@ -1,6 +1,6 @@
 import { Router } from "express";
 import type { Response } from "express";
-import type { RequestWithBody, User } from "../types";
+import type { RequestWithBody } from "../types";
 import { HTTP_STATUSES } from "../utils/httpstatuses";
 import {
   userEmailValidator,
@@ -35,7 +35,11 @@ authRouter.post(
       return res.json(null);
     }
     const token = await jwtService.generateToken(user);
-    return res.status(HTTP_STATUSES.OK).json(token);
+    res.cookie("refreshToken", token.refreshToken, {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 5,
+    });
+    return res.status(HTTP_STATUSES.OK).json(token.token);
   }
 );
 

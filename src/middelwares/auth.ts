@@ -13,9 +13,11 @@ export const authValidation = async (req: Request, res: Response, next: NextFunc
 
     const user = await jwtService.verifyToken(token);
     if (user) {
+        console.log("Refresh token: ", req.cookies.refreshToken);
         req.body.user_id = user;
         next();
     }else{
+        const refreshToken = req.cookies.refreshToken;
         res.status(401).json({ message: "Unauthorized" });
     }
 };

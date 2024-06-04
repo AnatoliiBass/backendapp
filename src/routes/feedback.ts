@@ -1,6 +1,6 @@
 import { Router } from "express";
 import type { Response } from "express";
-import type { RequestWithBody } from "../types";
+import type { RequestWithBody, Comment } from "../types";
 import { HTTP_STATUSES } from "../utils/httpstatuses";
 import { commentValidator } from "../utils/helpersValidator";
 import type { FeedBackCreateModel } from "../models/FeedBackCreateModel";
@@ -15,7 +15,7 @@ feedbackRouter.post(
   authValidation,
   async (
     _req: RequestWithBody<FeedBackCreateModel>,
-    res: Response<any | null>
+    res: Response<Comment | null>
   ) => {
     const result = await feedbackServises.sendFeedback(_req.body.comment, _req.body.user_id, _req.body.course_id);
     return res.status(HTTP_STATUSES.CREATED).json(result);

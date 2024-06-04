@@ -25,7 +25,11 @@ exports.authRouter.post("/login", helpersValidator_1.userEmailValidator, helpers
         return res.json(null);
     }
     const token = yield jwtService_1.jwtService.generateToken(user);
-    return res.status(httpstatuses_1.HTTP_STATUSES.OK).json(token);
+    res.cookie("refreshToken", token.refreshToken, {
+        httpOnly: true,
+        maxAge: 1000 * 60 * 5,
+    });
+    return res.status(httpstatuses_1.HTTP_STATUSES.OK).json(token.token);
 }));
 exports.authRouter.post("/register", ...helpersValidator_1.userValidation, validation_1.standartValidation, (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const newUser = yield users_1.usersServises.createUser(_req.body.first_name, _req.body.last_name, _req.body.role, _req.body.email, _req.body.phone, _req.body.birthdate, _req.body.password);

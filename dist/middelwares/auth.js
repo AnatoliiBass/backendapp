@@ -21,10 +21,12 @@ const authValidation = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
     }
     const user = yield jwtService_1.jwtService.verifyToken(token);
     if (user) {
+        console.log("Refresh token: ", req.cookies.refreshToken);
         req.body.user_id = user;
         next();
     }
     else {
+        const refreshToken = req.cookies.refreshToken;
         res.status(401).json({ message: "Unauthorized" });
     }
 });

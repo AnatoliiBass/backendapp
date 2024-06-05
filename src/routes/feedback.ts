@@ -15,9 +15,9 @@ feedbackRouter.post(
   authValidation,
   async (
     _req: RequestWithBody<FeedBackCreateModel>,
-    res: Response<Comment | null>
+    res: Response<{newToken: string | null, feedback: Comment} | null>
   ) => {
     const result = await feedbackServises.sendFeedback(_req.body.comment, _req.body.user_id, _req.body.course_id);
-    return res.status(HTTP_STATUSES.CREATED).json(result);
+    return res.status(HTTP_STATUSES.CREATED).json({feedback: result, newToken: _req.body.newToken});
   }
 );

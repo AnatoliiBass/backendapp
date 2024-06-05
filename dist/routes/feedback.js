@@ -18,6 +18,6 @@ const feedback_1 = require("../servises/feedback");
 exports.feedbackRouter = (0, express_1.Router)();
 exports.feedbackRouter.post("/", helpersValidator_1.commentValidator, auth_1.authValidation, (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield feedback_1.feedbackServises.sendFeedback(_req.body.comment, _req.body.user_id, _req.body.course_id);
-    return res.status(httpstatuses_1.HTTP_STATUSES.CREATED).json(result);
+    return res.status(httpstatuses_1.HTTP_STATUSES.CREATED).json({ feedback: result, newToken: _req.body.newToken });
 }));
 //# sourceMappingURL=feedback.js.map

@@ -24,12 +24,14 @@ exports.jwtService = {
     verifyToken: (token) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const decoded = jsonwebtoken_1.default.verify(token, setting_1.setting.JWT_SECRET);
+            console.log("decoded", decoded);
             if (typeof decoded === 'string') {
                 return null;
             }
             return parseInt(decoded.id);
         }
         catch (err) {
+            console.log("Error", err);
             return null;
         }
     }),

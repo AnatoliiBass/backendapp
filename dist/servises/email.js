@@ -36,15 +36,18 @@ exports.emailServices = {
     confirmEmail(code) {
         return __awaiter(this, void 0, void 0, function* () {
             const user = yield usersFromDBCommand_1.usersRepositoryCommand.getUserByConfirmCode(code);
+            console.log("User", user);
             if (!user)
                 return false;
             if (user.emailConfirmation.isConfirmed)
                 return false;
+            console.log("user.emailConfirmation.expires_at <= new Date().toISOString()", user.emailConfirmation.expires_at <= new Date().toISOString());
             if (user.emailConfirmation.expires_at <= new Date().toISOString())
                 return false;
             if (user.emailConfirmation.code !== code)
                 return false;
             const updatedUser = yield usersFromDBCommand_1.usersRepositoryCommand.updateUserConfirm(user.id);
+            console.log("updatedUser", updatedUser);
             if (!updatedUser)
                 return false;
             return true;

@@ -1,6 +1,7 @@
 export type FeedBackCreateModel = {
+    newToken: string | null;
     /**
-     * The feedback author.
+     * The feedback user.
      */
     user_id: number;
     /**

@@ -10,11 +10,13 @@ export const jwtService = {
     verifyToken: async (token: string): Promise<number | null> => {
         try {
             const decoded: string | jwt.JwtPayload = jwt.verify(token, setting.JWT_SECRET);
+            console.log("decoded", decoded);
             if (typeof decoded === 'string') {
                 return null;
             }
             return parseInt(decoded.id);
         } catch(err) {
+            console.log("Error", err);
             return null;
         }
     },

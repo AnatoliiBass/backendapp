@@ -21,11 +21,14 @@ export const emailServices = {
     },
     async confirmEmail(code: string) {
         const user = await usersRepositoryCommand.getUserByConfirmCode(code);
+        console.log("User", user);
         if(!user) return false;
         if (user.emailConfirmation.isConfirmed) return false;
+        console.log("user.emailConfirmation.expires_at <= new Date().toISOString()", user.emailConfirmation.expires_at <= new Date().toISOString());
         if(user.emailConfirmation.expires_at <= new Date().toISOString()) return false;
         if(user.emailConfirmation.code !== code) return false;
         const updatedUser = await usersRepositoryCommand.updateUserConfirm(user.id);
+        console.log("updatedUser", updatedUser);
         if(!updatedUser) return false;
         return true;
     },

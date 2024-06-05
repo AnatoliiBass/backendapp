@@ -66,7 +66,7 @@ export const usersServises = {
     },
     async checkCredentials(email: string, password: string): Promise<User | null>{
         const user = await usersRepositoryCommand.getUserByEmail(email);
-        if(!user || user.emailConfirmation.isConfirmed){
+        if(!user || !user.emailConfirmation.isConfirmed){
             return null;
         }
         const result = await bcrypt.compare(password, user.password);

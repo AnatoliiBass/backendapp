@@ -38,15 +38,14 @@ exports.jwtService = {
     verifyRefreshToken: (token) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const decoded = jsonwebtoken_1.default.verify(token, setting_1.setting.JWT_REFRESH_SECRET);
+            console.log("decoded", decoded);
             if (typeof decoded === 'string') {
-                return null;
-            }
-            if (decoded.date <= new Date().toUTCString()) {
                 return null;
             }
             return { user_id: parseInt(decoded.id), date: decoded.date };
         }
         catch (err) {
+            console.log("Error", err);
             return null;
         }
     })

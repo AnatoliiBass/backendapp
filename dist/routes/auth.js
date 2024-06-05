@@ -25,7 +25,7 @@ exports.authRouter.post("/login", helpersValidator_1.userEmailValidator, helpers
         return res.json(null);
     }
     const token = yield jwtService_1.jwtService.generateToken(user);
-    res.cookie("refreshToken", token.refreshToken, {
+    res.cookie("refreshtoken", token.refreshToken, {
         httpOnly: true,
         maxAge: 1000 * 60 * 5,
     });

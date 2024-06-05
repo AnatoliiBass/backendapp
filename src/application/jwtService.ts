@@ -23,14 +23,13 @@ export const jwtService = {
     verifyRefreshToken: async (token: string): Promise<{user_id: number, date: string} | null> => {
         try {
             const decoded: string | jwt.JwtPayload = jwt.verify(token, setting.JWT_REFRESH_SECRET);
+            console.log("decoded", decoded);
             if (typeof decoded === 'string') {
-                return null;
-            }
-            if (decoded.date <= new Date().toUTCString()) {
                 return null;
             }
             return {user_id: parseInt(decoded.id), date: decoded.date};
         } catch(err) {
+            console.log("Error", err);
             return null;
         }
     }

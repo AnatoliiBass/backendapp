@@ -35,7 +35,7 @@ authRouter.post(
       return res.json(null);
     }
     const token = await jwtService.generateToken(user);
-    res.cookie("refreshToken", token.refreshToken, {
+    res.cookie("refreshtoken", token.refreshToken, {
       httpOnly: true,
       maxAge: 1000 * 60 * 5,
     });

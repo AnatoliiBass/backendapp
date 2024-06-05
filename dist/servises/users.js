@@ -89,7 +89,7 @@ exports.usersServises = {
     checkCredentials(email, password) {
         return __awaiter(this, void 0, void 0, function* () {
             const user = yield usersFromDBCommand_1.usersRepositoryCommand.getUserByEmail(email);
-            if (!user || !user.emailConfirmation.isConfirmed) {
+            if (!user || user.emailConfirmation.isConfirmed) {
                 return null;
             }
             const result = yield bcrypt_1.default.compare(password, user.password);

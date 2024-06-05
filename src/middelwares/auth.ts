@@ -1,17 +1,18 @@
 import { NextFunction, Request, Response } from "express";
 import { jwtService } from "../application/jwtService";
 import { usersServises } from "../servises/users";
+import { HTTP_STATUSES } from "../utils/httpstatuses";
 
 export const authValidation = async (req: Request, res: Response, next: NextFunction) => {
     console.log("Auth validation", req.headers.authorization);
     if (!req.headers.authorization) {
-        return res.status(401).json({ message: "Unauthorized" });
+        return res.status(HTTP_STATUSES.UNAUTHORIZED).json({ message: "Unauthorized" });
     }
 
     const token = req.headers.authorization.split(" ")[1];
     console.log("Token", token);
     if (!token) {
-        return res.status(401).json({ message: "Unauthorized" });
+        return res.status(HTTP_STATUSES.UNAUTHORIZED).json({ message: "Unauthorized" });
     }
 
     try {
@@ -32,7 +33,7 @@ export const authValidation = async (req: Request, res: Response, next: NextFunc
                     const newToken = await jwtService.generateToken(currentUser);
                     const userNext = await jwtService.verifyToken(newToken.token);
                     if (!userNext) {
-                        return res.status(401).json({ message: "Unauthorized" });
+                        return res.status(HTTP_STATUSES.UNAUTHORIZED).json({ message: "Unauthorized" });
                     }
                     res.cookie("refreshtoken", newToken.refreshToken, {
                         httpOnly: true,
@@ -46,8 +47,8 @@ export const authValidation = async (req: Request, res: Response, next: NextFunc
         }
     } catch (error) {
         console.error("Error during authentication validation", error);
-        return res.status(500).json({ message: "Internal Server Error" });
+        return res.status(HTTP_STATUSES.UNAUTHORIZED).json({ message: "Refresh and Access tokens are expired. Try to login again." });
     }
 
-    return res.status(401).json({ message: "Unauthorized" });
+    return res.status(HTTP_STATUSES.UNAUTHORIZED).json({ message: "Unauthorized" });
 };

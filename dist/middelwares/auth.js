@@ -12,15 +12,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.authValidation = void 0;
 const jwtService_1 = require("../application/jwtService");
 const users_1 = require("../servises/users");
+const httpstatuses_1 = require("../utils/httpstatuses");
 const authValidation = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     console.log("Auth validation", req.headers.authorization);
     if (!req.headers.authorization) {
-        return res.status(401).json({ message: "Unauthorized" });
+        return res.status(httpstatuses_1.HTTP_STATUSES.UNAUTHORIZED).json({ message: "Unauthorized" });
     }
     const token = req.headers.authorization.split(" ")[1];
     console.log("Token", token);
     if (!token) {
-        return res.status(401).json({ message: "Unauthorized" });
+        return res.status(httpstatuses_1.HTTP_STATUSES.UNAUTHORIZED).json({ message: "Unauthorized" });
     }
     try {
         const user = yield jwtService_1.jwtService.verifyToken(token);
@@ -41,7 +42,7 @@ const authValidation = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
                     const newToken = yield jwtService_1.jwtService.generateToken(currentUser);
                     const userNext = yield jwtService_1.jwtService.verifyToken(newToken.token);
                     if (!userNext) {
-                        return res.status(401).json({ message: "Unauthorized" });
+                        return res.status(httpstatuses_1.HTTP_STATUSES.UNAUTHORIZED).json({ message: "Unauthorized" });
                     }
                     res.cookie("refreshtoken", newToken.refreshToken, {
                         httpOnly: true,
@@ -56,9 +57,9 @@ const authValidation = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
     }
     catch (error) {
         console.error("Error during authentication validation", error);
-        return res.status(500).json({ message: "Internal Server Error" });
+        return res.status(httpstatuses_1.HTTP_STATUSES.UNAUTHORIZED).json({ message: "Refresh and Access tokens are expired. Try to login again." });
     }
-    return res.status(401).json({ message: "Unauthorized" });
+    return res.status(httpstatuses_1.HTTP_STATUSES.UNAUTHORIZED).json({ message: "Unauthorized" });
 });
 exports.authValidation = authValidation;
 //# sourceMappingURL=auth.js.map
